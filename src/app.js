@@ -11,6 +11,7 @@ export default {
 	data(){
 		return {
 			showCompleted: true,
+			theme: null,
 			tasks_:[{
 				id: 1,
 				title: 'Task 1',
@@ -20,6 +21,11 @@ export default {
 				title: 'Task 2',
 				done: true,
 			}]
+		}
+	},
+	watch: {
+		theme(val){
+			document.body.setAttribute('data-bs-theme',val);
 		}
 	},
 	computed:{
@@ -50,5 +56,8 @@ export default {
 		clearCompleted() {
 			this.tasks_ = this.tasks_.filter(task => !task.done);
 		}
+	},
+	created(){
+		this.theme = 'dark';
 	}
 }

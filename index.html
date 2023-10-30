@@ -15,11 +15,16 @@
 	<link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
-<body data-bs-theme="dark">
+<body>
 	<div id="app">
 		<h1 class="text-center mt-4 mb-2">Tasks Vue</h1>	
 		<div class="card bg-body-secondary mx-auto" id="task-list">
-			<div class="card-header"><h4 class="text-end">Task List</h4></div>
+			<div class="card-header">
+				<h4 class="text-end">
+					Task List
+					<button class="btn btn-sm btn-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings"><i class="bi bi-gear-fill text-white"></i></button>
+				</h4>
+			</div>
 
 			<div class="card-body">
 				<add-task-box @add-task="addTask"></add-task-box>
@@ -35,9 +40,24 @@
 				<button class="btn btn-sm btn-secondary float-end" :disabled="!count_tasks_completed" @click="clearCompleted">Clear Completed</button>
 			</div>
 		</div>
-
+		<div class="offcanvas offcanvas-end" id="offcanvas-settings">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title">Settings</h5>
+				<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+			</div>
+			<div class="offcanvas-body">
+				<div class="mb-3">
+					<label for="theme-select" class="form-label">Theme</label>
+					<select class="form-select" id="theme-select" v-model="theme">
+						<option value="light">Light</option>
+						<option value="dark">Dark</option>
+					</select>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script src="./node_modules/lodash/lodash.min.js"></script>
+	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script type="module" src="src/index.js"></script>
 
 	<!-- Templates -->

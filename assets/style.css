@@ -3,6 +3,6 @@
 	max-width: 35rem;
 }
 
-.task-done .form-check-label{
+.task-done .form-check-label .label{
 	text-decoration: line-through;
 }
