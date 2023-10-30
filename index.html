@@ -11,10 +11,31 @@
 			}
 		}
 	</script>
+	<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
-<body>
-	
+<body data-bs-theme="dark">
+	<div id="app">
+		<h1 class="text-center mt-4 mb-2">Tasks Vue</h1>	
+		<div class="card bg-body-secondary mx-auto" id="task-list">
+			<div class="card-header"><h4 class="text-end">Task List</h4></div>
+
+			<div class="card-body">
+				<add-task-box @add-task="addTask"></add-task-box>
+			</div>
+			<div class="card-body">
+				<task-list :tasks="tasks" @delete-task="deleteTask"></task-list>
+			</div>
+			<div class="card-footer bg-body">
+			</div>
+		</div>
+
+	</div>
+	<script src="./node_modules/lodash/lodash.min.js"></script>
 	<script type="module" src="src/index.js"></script>
+
+	<!-- Templates -->
+
 </body>
 </html>

@@ -1,0 +1,8 @@
+
+#task-list{
+	max-width: 35rem;
+}
+
+.task-done .form-check-label{
+	text-decoration: line-through;
+}
