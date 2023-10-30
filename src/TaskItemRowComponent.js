@@ -32,7 +32,7 @@ export default {
 		},
 	},
 	template: /* html */`
-		<li class="list-group-item d-flex align-items-center">
+		<li class="list-group-item d-flex align-items-center" :class="{'list-group-item-success': task.done}">
 			<labeled-checkbox
 				class="me-auto"
 				:editing="editing"
