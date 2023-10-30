@@ -1,4 +1,8 @@
 
+label{
+	user-select: none;
+}
+
 #task-list{
 	max-width: 35rem;
 }

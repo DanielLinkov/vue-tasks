@@ -36,6 +36,7 @@ export default {
 			<labeled-checkbox
 				class="me-auto"
 				:editing="editing"
+				:edited-value="task.title"
 				:class="{'task-done': task.done}"
 				v-model="task.done"
 				@update:editing="onUpdateEditing"

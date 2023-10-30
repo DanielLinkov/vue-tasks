@@ -1,11 +1,10 @@
 
 export default {
-	props: [ 'modelValue','editing' ],
+	props: [ 'modelValue','editing','editedValue' ],
 	emits: [ 'update:model-value','update:editing' ],
 	data(){
 		return {
 			elId: null,
-			textSlot: null,
 			textEdited: null,
 		}
 	},
@@ -13,12 +12,11 @@ export default {
 		this.elId = _.uniqueId('_vue_checkbox_');
 	},
 	mounted(){
-		this.textSlot = this.$refs.label.textContent;
 	},
 	watch: {
 		editing(val){
 			if(val){
-				this.textEdited = this.textSlot;
+				this.textEdited = this.editedValue;
 				setTimeout(() => {
 					this.$refs.editor.focus();
 				}, 0);
@@ -37,7 +35,7 @@ export default {
 			v-show="editing"
 			v-model="textEdited"
 			@keyup.escape="$emit('update:editing',false)"
-			@keyup.enter="textEdited.trim().length ? $emit('update:editing',textEdited.trim()) : $emit('update:editing',textSlot)"
+			@keyup.enter="textEdited.trim().length ? $emit('update:editing',textEdited.trim()) : $emit('update:editing',editedValue)"
 			type="text"
 			class="form-control"
 			ref="editor"
