@@ -24,10 +24,14 @@
 			<div class="card-body">
 				<add-task-box @add-task="addTask"></add-task-box>
 			</div>
+			<div class="card-header">
+				<labeled-checkbox v-model="showCompleted" class="float-end">Show Completed</labeled-checkbox>
+			</div>
 			<div class="card-body">
 				<task-list :tasks="tasks" @delete-task="deleteTask"></task-list>
 			</div>
 			<div class="card-footer bg-body">
+				<!-- task counter and delete completed -->
 			</div>
 		</div>
 

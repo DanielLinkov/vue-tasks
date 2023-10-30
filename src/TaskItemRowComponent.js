@@ -39,7 +39,7 @@ export default {
 				:class="{'task-done': task.done}"
 				v-model="task.done"
 				@update:editing="onUpdateEditing"
-				>{{ task.title }}</labeled-checkbox>
+				>{{ task.title }} {{ task.id }}</labeled-checkbox>
 			<div class="btn-group">
 				<button class="btn btn-secondary" title="Edit task" v-if="!editing" @click="this.editing = true"><i class="bi bi-pencil"></i></button>
 				<button class="btn btn-link" v-if="editing" @click="this.editing = false">cancel</button>

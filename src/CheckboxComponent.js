@@ -28,7 +28,7 @@ export default {
 	methods: {
 	},
 	template: /* html */`
-		<span>
+		<div>
 		<div class="form-check" v-if="!editing">
 			<input type="checkbox" :checked="modelValue" @change="$emit('update:model-value',$event.target.checked)" class="form-check-input" :id="elId">
 			<label class="form-check-label" :for="elId" ref="label"><slot></slot></label>
@@ -42,6 +42,6 @@ export default {
 			class="form-control"
 			ref="editor"
 		/>
-		</span>
+		</div>
 	`,
 }
