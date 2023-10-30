@@ -21,11 +21,11 @@ export default {
 			if(val){
 				this.editedTaskId = val;
 			}	
-		}
+		},
 	},
 	template: /* html */`
 		<ul class="list-group">
-			<task-item v-for="task in tasks" @update:editing="onUpdateEditing" :key="task.id" :task="task"></task-item>
+			<task-item v-for="task in tasks" @delete:task="$emit('delete:task',task.id)" @update:editing="onUpdateEditing" :key="task.id" :task="task"></task-item>
 		</ul>
 	`,
 }

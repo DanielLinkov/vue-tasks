@@ -28,10 +28,11 @@
 				<labeled-checkbox v-model="showCompleted" class="float-end">Show Completed</labeled-checkbox>
 			</div>
 			<div class="card-body">
-				<task-list :tasks="tasks" @delete-task="deleteTask"></task-list>
+				<task-list :tasks="tasks" @delete:task="deleteTask"></task-list>
 			</div>
 			<div class="card-footer bg-body">
-				<!-- task counter and delete completed -->
+				<span>{{ count_tasks_left}} tasks left</span>
+				<button class="btn btn-sm btn-secondary float-end" :disabled="!count_tasks_completed" @click="clearCompleted">Clear Completed</button>
 			</div>
 		</div>
 

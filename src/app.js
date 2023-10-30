@@ -28,17 +28,27 @@ export default {
 				return this.tasks_;
 			}
 			return this.tasks_.filter(task => !task.done);
-		}	
+		},
+		count_tasks_left(){
+			return this.tasks_.filter(task => !task.done).length;
+		},
+		count_tasks_completed(){
+			return this.tasks_.filter(task => task.done).length;
+		}
 	},
 	methods: {
 		addTask(title) {
-			this.tasks.push({
+			this.tasks_.push({
 				id: +_.uniqueId(),
 				title,
 				done: false,
 			})
 		},
 		deleteTask(id) {
+			this.tasks_ = this.tasks_.filter(task=>task.id != id);
+		},
+		clearCompleted() {
+			this.tasks_ = this.tasks_.filter(task => !task.done);
 		}
 	}
 }
