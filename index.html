@@ -30,7 +30,7 @@
 				<add-task-box @add-task="addTask"></add-task-box>
 			</div>
 			<div class="card-header">
-				<labeled-checkbox v-model="showCompleted" class="float-end">Show Completed</labeled-checkbox>
+				<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
 			</div>
 			<div class="card-body">
 				<task-list :tasks="tasks" @delete:task="deleteTask"></task-list>
@@ -48,7 +48,7 @@
 			<div class="offcanvas-body">
 				<div class="mb-3">
 					<label for="theme-select" class="form-label">Theme</label>
-					<select class="form-select" id="theme-select" v-model="theme">
+					<select class="form-select" id="theme-select" v-model="config.theme">
 						<option value="light">Light</option>
 						<option value="dark">Dark</option>
 					</select>
@@ -59,8 +59,6 @@
 	<script src="./node_modules/lodash/lodash.min.js"></script>
 	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script type="module" src="src/index.js"></script>
-
-	<!-- Templates -->
 
 </body>
 </html>

@@ -9,6 +9,7 @@ export default {
 	data(){
 		return {
 			editing: false,
+			draggingItem: null,
 		}
 	},
 	watch: {
@@ -32,7 +33,13 @@ export default {
 		},
 	},
 	template: /* html */`
-		<li class="list-group-item d-flex align-items-center" :class="{'list-group-item-success': task.done}">
+		<div class="list-group-item d-flex align-items-center hover-visible-container" :class="{'list-group-item-success': task.done}">
+			<span
+				class="hover-visible-item drag-handle me-2"
+				@mousedown="$emit('mousedown')"
+				@mousemove="$emit('mousemove')"
+				@mouseup="$emit('mouseup')"
+			><i class="bi bi-grip-horizontal"></i></span>
 			<labeled-checkbox
 				class="me-auto"
 				:editing="editing"
@@ -42,7 +49,7 @@ export default {
 				@update:editing="onUpdateEditing"
 				><span class="label">{{ task.title }}</span> <sup v-if="task.done">(completed)</sup>
 			</labeled-checkbox>
-			<div class="btn-group">
+			<div class="btn-group hover-visible-item">
 				<button class="btn btn-secondary" title="Edit task" v-if="!editing" @click="this.editing = true"><i class="bi bi-pencil"></i></button>
 				<button class="btn btn-link" v-if="editing" @click="this.editing = false">cancel</button>
 				<button
@@ -50,6 +57,6 @@ export default {
 					type="button" class="btn btn-danger btn-sm"
 				>Delete</button>
 			</div>
-		</li>
+		</div>
 	`,
 }

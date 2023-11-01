@@ -22,10 +22,27 @@ export default {
 				this.editedTaskId = val;
 			}	
 		},
+		onHandleMouseDown(e){
+		},
+		onHandleMouseMove(e){
+		},
+		onHandleMouseUp(e){
+		}
 	},
 	template: /* html */`
-		<ul class="list-group">
-			<task-item v-for="task in tasks" @delete:task="$emit('delete:task',task.id)" @update:editing="onUpdateEditing" :key="task.id" :task="task"></task-item>
-		</ul>
+		<div class="list-group">
+			<div class="task-item-placeholder bg-body-secondary">
+				<task-item
+					v-for="task in tasks"
+					@delete:task="$emit('delete:task',task.id)"
+					@update:editing="onUpdateEditing"
+					@mousedown="onHandleMouseDown"
+					@mousemove="onHandleMouseMove"
+					@mouseup="onHandleMouseUp"
+					:key="task.id"
+					:task="task"
+				></task-item>
+			</div>
+		</div>
 	`,
 }
