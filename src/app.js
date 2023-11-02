@@ -1,23 +1,21 @@
+import { nextTick, reactive, ref } from "vue";
 import AddTaskComponent from "./AddTaskComponent.js";
 import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
-import { PersitentModel } from "../lib/Model.js";
-import { LocalStorage } from "../lib/Persistence.js";
+import { PersistentModel } from "../lib/Model.js";
+import { RestApiJsonClient } from "../lib/Persistence.js";
 
-const storage = new LocalStorage({
-	prefix: 'vue-todo_',
+const storage = new RestApiJsonClient({
+	baseUrl : 'http://localhost:3000',
 });
 
-const ConfigModel = PersitentModel.extend({
+const ConfigModel = PersistentModel.extend({
 	props: {
-		theme: {
-			type: String,
-			default: 'light',
-		},
+		theme: 'light',
 		showCompleted: false,
 	},
 	storage,
-	storageEntryId: '/config',
+	storageEntryKey: '/config',
 });
 
 const configModel = new ConfigModel();
@@ -30,7 +28,10 @@ export default {
 	},
 	data(){
 		return {
-			config: configModel,
+			config: {
+				theme: null,
+				showCompleted: false,
+			},
 			tasks_:[
 				{
 					id: 1,
@@ -78,21 +79,24 @@ export default {
 		clearCompleted() {
 			this.tasks_ = this.tasks_.filter(task => !task.done);
 		},
-		onThemeChanged(val){
-			document.body.setAttribute('data-bs-theme',val);
-			this.config.theme = val;
-			this.config.save();
+		onThemeSelected(event){
+			document.body.setAttribute('data-bs-theme',event.target.value);
 		}
 	},
 	created(){
-		this.$watch('config.theme',this.onThemeChanged);
-		this.$watch('config.showCompleted',val=>{
-			this.config.showCompleted = val;
-			this.config.save();
-		});
-		this.config.fetch().then(res => {
+		configModel.fetch().then(res => {
+			this.config.theme = configModel.props.theme.get();
+			this.config.showCompleted = configModel.props.showCompleted.get();
+			document.body.setAttribute('data-bs-theme',this.config.theme);
+
+			this.$watch('config', val => {
+				console.log(val);
+				configModel.props.theme.set(val.theme);
+				configModel.props.showCompleted.set(val.showCompleted);
+				configModel.save();
+			},{deep : true});
 			if(res == false)	//Config not found
-				return this.config.save();
+				return configModel.save();
 		});
 	}
 }

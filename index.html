@@ -48,7 +48,7 @@
 			<div class="offcanvas-body">
 				<div class="mb-3">
 					<label for="theme-select" class="form-label">Theme</label>
-					<select class="form-select" id="theme-select" v-model="config.theme">
+					<select class="form-select" id="theme-select" @change="onThemeSelected" v-model="config.theme">
 						<option value="light">Light</option>
 						<option value="dark">Dark</option>
 					</select>
@@ -58,7 +58,8 @@
 	</div>
 	<script src="./node_modules/lodash/lodash.min.js"></script>
 	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script type="module" src="src/index.js"></script>
+	<script src="./node_modules/rxjs/dist/bundles/rxjs.umd.min.js"></script>
+	<script type="module" src="./src/index.js"></script>
 
 </body>
 </html>
