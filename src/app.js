@@ -92,7 +92,6 @@ export default {
 			if(result === true)	//Config exists and was updated
 				this.config = configModel.$propState;
 			const fnChange = async ()=>{
-				console.log('Config changed',this.config);
 				configModel.$update(this.config,{ callWatchers: true });
 				configModel.$save();
 			}
