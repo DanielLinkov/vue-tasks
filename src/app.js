@@ -83,16 +83,17 @@ export default {
 		clearCompleted() {
 			this.tasks_ = this.tasks_.filter(task => !task.done);
 		},
-		onThemeSelected(event){
-			configModel.theme = event.target.value;
-		}
 	},
 	created(){
+		configModel.$watch('theme',(val,unwatch)=>{
+			console.log('Theme changed to',val);
+		});
 		configModel.$fetch().then(result => {
 			if(result === true)	//Config exists and was updated
 				this.config = configModel.$propState;
 			const fnChange = async ()=>{
-				configModel.$update(this.config);
+				console.log('Config changed',this.config);
+				configModel.$update(this.config,{ callWatchers: true });
 				configModel.$save();
 			}
 			this.$watch('config.theme',fnChange);
