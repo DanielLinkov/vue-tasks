@@ -1,24 +1,28 @@
-import { nextTick, reactive, ref } from "vue";
 import AddTaskComponent from "./AddTaskComponent.js";
 import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
-import { PersistentModel } from "../lib/Model.js";
-import { RestApiJsonClient } from "../lib/Persistence.js";
+import { ModelFactory } from "../lib/ModelFactory.js";
+import { RestApiJsonClient,LocalStorage } from "../lib/Persistence.js";
 
 const storage = new RestApiJsonClient({
 	baseUrl : 'http://localhost:3000',
 });
+const storage2 = new LocalStorage({
+	prefix: 'todo_',
+});
 
-const ConfigModel = PersistentModel.extend({
+const ConfigModel = ModelFactory.createPersistent({
+	className : 'ConfigModel',
 	props: {
 		theme: 'light',
-		showCompleted: false,
+		showCompleted: true,
 	},
-	storage,
-	storageEntryKey: '/config',
+	storage: storage,
+	storageEntityName: 'config',
 });
 
 const configModel = new ConfigModel();
+console.log(configModel);
 
 export default {
 	components: {
@@ -28,10 +32,7 @@ export default {
 	},
 	data(){
 		return {
-			config: {
-				theme: null,
-				showCompleted: false,
-			},
+			config: configModel.$propState,
 			tasks_:[
 				{
 					id: 1,
@@ -50,6 +51,9 @@ export default {
 		}
 	},
 	watch: {
+		'config.theme': (val)=>{
+			document.body.setAttribute('data-bs-theme',val);
+		}
 	},
 	computed:{
 		tasks(){
@@ -80,23 +84,22 @@ export default {
 			this.tasks_ = this.tasks_.filter(task => !task.done);
 		},
 		onThemeSelected(event){
-			document.body.setAttribute('data-bs-theme',event.target.value);
+			configModel.theme = event.target.value;
 		}
 	},
 	created(){
-		configModel.fetch().then(res => {
-			this.config.theme = configModel.props.theme.get();
-			this.config.showCompleted = configModel.props.showCompleted.get();
-			document.body.setAttribute('data-bs-theme',this.config.theme);
-
-			this.$watch('config', val => {
-				console.log(val);
-				configModel.props.theme.set(val.theme);
-				configModel.props.showCompleted.set(val.showCompleted);
-				configModel.save();
-			},{deep : true});
-			if(res == false)	//Config not found
-				return configModel.save();
+		configModel.$fetch().then(result => {
+			if(result === true)	//Config exists and was updated
+				this.config = configModel.$propState;
+			const fnChange = async ()=>{
+				configModel.$update(this.config);
+				configModel.$save();
+			}
+			this.$watch('config.theme',fnChange);
+			this.$watch('config.showCompleted',fnChange);
+		},result=>{
+			console.error(result);
 		});
+
 	}
 }
