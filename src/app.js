@@ -2,6 +2,7 @@ import AddTaskComponent from "./AddTaskComponent.js";
 import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
 import { ModelFactory } from "../lib/ModelFactory.js";
+import { CollectionFactory } from "../lib/Collection.js";
 import { RestApiJsonClient,LocalStorage } from "../lib/Persistence.js";
 
 const storage = new RestApiJsonClient({
@@ -21,15 +22,40 @@ const ConfigModel = ModelFactory.createPersistent({
 	storageEntityName: 'config',
 	validators: {
 		theme: (model,val,addError)=>{
-			if(val != 'light' && val != 'dar')
+			if(val != 'light' && val != 'dark')
 				addError("Invalid theme");
-			model.$addError('theme','Cannot be dark');
 		},
 	}
 });
 
 const configModel = new ConfigModel();
 console.log(configModel);
+
+const TaskModel = ModelFactory.createPersistent({
+	className : 'TaskModel',
+	props: {
+		title: '',
+		done: false,
+	},
+	storage: storage,
+	storageEntityName: 'tasks',
+	validators: {
+		title: (val,model,addError)=>{
+			if(typeof val != 'string')
+				addError("Invalid title");
+		},
+		done: (val,model,addError)=>{
+			if(typeof val != 'boolean')
+				addError("Invalid done");
+		},
+	}
+});
+const TaskCollection = CollectionFactory.create({
+	modelClass: TaskModel,
+	className : 'TaskCollection',
+	storage: storage,
+	storageEntityName: 'tasks',
+});
 
 export default {
 	components: {
