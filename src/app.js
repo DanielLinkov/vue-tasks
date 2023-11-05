@@ -1,61 +1,14 @@
 import AddTaskComponent from "./AddTaskComponent.js";
 import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
-import { ModelFactory } from "../lib/ModelFactory.js";
-import { CollectionFactory } from "../lib/Collection.js";
-import { RestApiJsonClient,LocalStorage } from "../lib/Persistence.js";
-
-const storage = new RestApiJsonClient({
-	baseUrl : 'http://localhost:3000',
-});
-const storage2 = new LocalStorage({
-	prefix: 'todo_',
-});
-
-const ConfigModel = ModelFactory.createPersistent({
-	className : 'ConfigModel',
-	props: {
-		theme: 'light',
-		showCompleted: true,
-	},
-	storage: storage,
-	storageEntityName: 'config',
-	validators: {
-		theme: (model,val,addError)=>{
-			if(val != 'light' && val != 'dark')
-				addError("Invalid theme");
-		},
-	}
-});
+import { ConfigModel, TaskCollection } from "./Classes.js";
 
 const configModel = new ConfigModel();
-console.log(configModel);
+const taskCollection = new TaskCollection();
 
-const TaskModel = ModelFactory.createPersistent({
-	className : 'TaskModel',
-	props: {
-		title: '',
-		done: false,
-	},
-	storage: storage,
-	storageEntityName: 'tasks',
-	validators: {
-		title: (val,model,addError)=>{
-			if(typeof val != 'string')
-				addError("Invalid title");
-		},
-		done: (val,model,addError)=>{
-			if(typeof val != 'boolean')
-				addError("Invalid done");
-		},
-	}
-});
-const TaskCollection = CollectionFactory.create({
-	modelClass: TaskModel,
-	className : 'TaskCollection',
-	storage: storage,
-	storageEntityName: 'tasks',
-});
+// taskCollection.$append(new TaskModel({)
+
+console.log(taskCollection);
 
 export default {
 	components: {
@@ -118,28 +71,29 @@ export default {
 		},
 	},
 	created(){
-		configModel.$watch('theme',val=>{
-			console.log('Theme changed to ' + val);
-		});
 		configModel.$fetch().then(result => {
 			if(result === true)	//Config exists and was updated
 				this.config = configModel.$propState;
+		},result=>{
+			console.error('fetch error:',result);
+		})
+		.finally(()=>{
 			const fnChange = ()=>{
 				configModel.$update(this.config);
-				configModel.$validate();
 				configModel.$save()
 					.then(result=>{
-						if(result === false)
-							console.warn(configModel.$getErrors())
+						console.log('save result:',result);
+						if(!result)
+							console.warn(configModel.$errors);
 					})
-					.catch(err=>{
-						console.error('err:',err);
-					})
+					.catch(result=>{
+						console.error('save error:',result);
+						configModel.$revert();
+						this.config = configModel.$propState;
+					});
 			}
 			this.$watch('config.theme',fnChange);
 			this.$watch('config.showCompleted',fnChange);
-		},result=>{
-			console.error(result);
 		});
 
 	}

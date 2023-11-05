@@ -1,3 +1,4 @@
+import { TaskModel } from "./Classes.js";
 
 export default {
 	data() {
