@@ -19,6 +19,12 @@ const ConfigModel = ModelFactory.createPersistent({
 	},
 	storage: storage,
 	storageEntityName: 'config',
+	validators: {
+		theme: (model,val)=>{
+			if(val != 'light' && val != 'dar')
+				throw new Error("Invalid theme");
+		},
+	}
 });
 
 const configModel = new ConfigModel();
@@ -87,6 +93,8 @@ export default {
 	created(){
 		configModel.$watch('theme',val=>{
 			console.log('Theme changed to ' + val);
+			configModel.$validate();
+			console.log(configModel.$error('theme'));
 		});
 		configModel.$fetch().then(result => {
 			if(result === true)	//Config exists and was updated
