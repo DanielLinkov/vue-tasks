@@ -20,9 +20,10 @@ const ConfigModel = ModelFactory.createPersistent({
 	storage: storage,
 	storageEntityName: 'config',
 	validators: {
-		theme: (model,val)=>{
+		theme: (model,val,addError)=>{
 			if(val != 'light' && val != 'dar')
-				throw new Error("Invalid theme");
+				addError("Invalid theme");
+			model.$addError('theme','Cannot be dark');
 		},
 	}
 });
@@ -93,15 +94,21 @@ export default {
 	created(){
 		configModel.$watch('theme',val=>{
 			console.log('Theme changed to ' + val);
-			configModel.$validate();
-			console.log(configModel.$error('theme'));
 		});
 		configModel.$fetch().then(result => {
 			if(result === true)	//Config exists and was updated
 				this.config = configModel.$propState;
 			const fnChange = ()=>{
 				configModel.$update(this.config);
-				configModel.$save();
+				configModel.$validate();
+				configModel.$save()
+					.then(result=>{
+						if(result === false)
+							console.warn(configModel.$getErrors())
+					})
+					.catch(err=>{
+						console.error('err:',err);
+					})
 			}
 			this.$watch('config.theme',fnChange);
 			this.$watch('config.showCompleted',fnChange);
