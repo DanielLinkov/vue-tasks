@@ -33,7 +33,7 @@
 				<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
 			</div>
 			<div class="card-body">
-				<task-list :tasks="tasks" @delete:task="deleteTask"></task-list>
+				<task-list :tasks="tasks" @delete:task="deleteTask" ref="taskList"></task-list>
 			</div>
 			<div class="card-footer bg-body">
 				<span>{{ count_tasks_left}} tasks left</span>

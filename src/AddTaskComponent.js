@@ -12,7 +12,7 @@ export default {
 		},
 		addTask() {
 			if(this.$refs.input.value.trim().length === 0) return;
-			this.$emit('add-task', this.$refs.input.value.trim());
+			this.$emit('add-task', {title: this.$refs.input.value.trim()});
 			this.disabled = true;
 			this.$refs.input.value = '';
 		}

@@ -1,12 +1,14 @@
 import AddTaskComponent from "./AddTaskComponent.js";
 import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
-import { ConfigModel, TaskCollection } from "./Classes.js";
+import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
 
 const configModel = new ConfigModel();
 const taskCollection = new TaskCollection();
 
-// taskCollection.$append(new TaskModel({)
+taskCollection.$add(new TaskModel({title: 'Task 1', done: false}));
+taskCollection.$add(new TaskModel({title: 'Task 2', done: true}));
+taskCollection.$add({title: 'Task 3'});
 
 console.log(taskCollection);
 
@@ -19,21 +21,6 @@ export default {
 	data(){
 		return {
 			config: configModel.$propState,
-			tasks_:[
-				{
-					id: 1,
-					title: 'Task 1',
-					done: false,
-				},{
-					id: 2,
-					title: 'Task 2',
-					done: true,
-				},{
-					id: 2,
-					title: 'Marvel Task',
-					done: false
-				},
-			]
 		}
 	},
 	watch: {
@@ -44,24 +31,21 @@ export default {
 	computed:{
 		tasks(){
 			if(this.config.showCompleted){
-				return this.tasks_;
+				return taskCollection.$items;
 			}
-			return this.tasks_.filter(task => !task.done);
+			return taskCollection.$items.filter(task => !task.done);
 		},
 		count_tasks_left(){
-			return this.tasks_.filter(task => !task.done).length;
+			return taskCollection.$items.filter(task => !task.done).length;
 		},
 		count_tasks_completed(){
-			return this.tasks_.filter(task => task.done).length;
+			return taskCollection.$items.filter(task => task.done).length;
 		}
 	},
 	methods: {
-		addTask(title) {
-			this.tasks_.push({
-				id: +_.uniqueId(),
-				title,
-				done: false,
-			})
+		addTask(model) {
+			taskCollection.$add(model);
+			this.$refs.taskList.$forceUpdate();
 		},
 		deleteTask(id) {
 			this.tasks_ = this.tasks_.filter(task=>task.id != id);
@@ -82,12 +66,10 @@ export default {
 				configModel.$update(this.config);
 				configModel.$save()
 					.then(result=>{
-						console.log('save result:',result);
 						if(!result)
 							console.warn(configModel.$errors);
 					})
 					.catch(result=>{
-						console.error('save error:',result);
 						configModel.$revert();
 						this.config = configModel.$propState;
 					});
