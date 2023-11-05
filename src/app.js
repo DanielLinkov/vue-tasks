@@ -85,14 +85,14 @@ export default {
 		},
 	},
 	created(){
-		configModel.$watch('theme',(val,unwatch)=>{
-			console.log('Theme changed to',val);
+		configModel.$watch('theme',val=>{
+			console.log('Theme changed to ' + val);
 		});
 		configModel.$fetch().then(result => {
 			if(result === true)	//Config exists and was updated
 				this.config = configModel.$propState;
-			const fnChange = async ()=>{
-				configModel.$update(this.config,{ callWatchers: true });
+			const fnChange = ()=>{
+				configModel.$update(this.config);
 				configModel.$save();
 			}
 			this.$watch('config.theme',fnChange);
