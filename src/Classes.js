@@ -35,14 +35,17 @@ const TaskModel = ModelFactory.createPersistent({
 	storage: storage,
 	storageEntityName: 'tasks',
 	validators: {
-		title: (val,model,addError)=>{
+		title: [(val,model,addError)=>{
 			if(typeof val != 'string')
 				addError("Invalid title property type");
 			val = val.trim();
 			if(val.length == 0)
 				addError("Title is empty");
-			return val;
-		},
+		},(val)=>{
+			return val.toUpperCase();
+		},(val)=>{
+			return val.replace(/[oO]/g,'🐵').replace(/[yY]/g,'🦒');
+		}],
 	}
 });
 
