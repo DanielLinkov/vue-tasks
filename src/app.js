@@ -6,7 +6,7 @@ import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
 const configModel = new ConfigModel();
 const taskCollection = new TaskCollection();
 
-let task1 = new TaskModel({title: 'Task 1', done: false});
+const task1 = new TaskModel({title: 'Task 1', done: false});
 taskCollection.$add(task1);
 taskCollection.$add(new TaskModel({title: 'Task 2', done: true}));
 taskCollection.$add({title: 'Task 3'});
