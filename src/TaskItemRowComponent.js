@@ -1,4 +1,5 @@
 import CheckboxComponent from "./CheckboxComponent.js";
+import { ViewAdapterVue } from "../lib/View.js";
 
 export default {
 	components: {
@@ -31,6 +32,11 @@ export default {
 			}
 			this.editing = false;
 		},
+	},
+	mounted(){
+		this.task.$watch('done',()=>{
+			// this.$forceUpdate();
+		});
 	},
 	template: /* html */`
 		<div class="list-group-item d-flex align-items-center hover-visible-container" :class="{'list-group-item-success': task.done}">

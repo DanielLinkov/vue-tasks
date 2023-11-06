@@ -34,13 +34,13 @@ export default {
 			if(this.config.showCompleted){
 				return taskCollection.$items;
 			}
-			return taskCollection.$items.filter(task => !task.done);
+			return taskCollection.$all(task => !task.done);
 		},
 		count_tasks_left(){
-			return taskCollection.$items.filter(task => !task.done).length;
+			return taskCollection.$all(task => !task.done).length;
 		},
 		count_tasks_completed(){
-			return taskCollection.$items.filter(task => task.done).length;
+			return taskCollection.$all(task => task.done).length;
 		}
 	},
 	methods: {
