@@ -44,7 +44,12 @@ const TaskModel = ModelFactory.createPersistent({
 		},(val)=>{
 			return val.toUpperCase();
 		},(val)=>{
-			return val.replace(/[oO]/g,'🐵').replace(/[yY]/g,'🦒');
+			return val
+				.replace(/[oO]/g,'🐵')
+				.replace(/[yY]/g,'🦒')
+				.replace(/[tT]/g,'✝')
+				.replace(/[mM]/g,'🐻')
+				;
 		}],
 	}
 });
