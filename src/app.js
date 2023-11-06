@@ -44,8 +44,8 @@ export default {
 		}
 	},
 	methods: {
-		addTask(model) {
-			taskCollection.$add(model);
+		addTask(data) {
+			taskCollection.$add(data);
 			this.$refs.taskList.$forceUpdate();
 		},
 		deleteTask(cid) {

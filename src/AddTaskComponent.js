@@ -8,7 +8,7 @@ export default {
 	},
 	methods: {
 		addTask() {
-			this.$emit('add-task', {title: this.newTask.title});
+			this.$emit('add-task', {title: this.newTask.title});	// emit event to parent with a dummy model
 			this.newTask.title = '';
 			this.newTask.$clearErrors('title');
 			this.$forceUpdate();
