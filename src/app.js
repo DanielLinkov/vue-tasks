@@ -53,7 +53,8 @@ export default {
 			this.$refs.taskList.$forceUpdate();
 		},
 		clearCompleted() {
-			this.tasks_ = this.tasks_.filter(task => !task.done);
+			taskCollection.$removeWhere(task => task.done);
+			this.$refs.taskList.$forceUpdate();
 		},
 	},
 	created(){
