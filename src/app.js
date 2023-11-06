@@ -6,7 +6,8 @@ import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
 const configModel = new ConfigModel();
 const taskCollection = new TaskCollection();
 
-taskCollection.$add(new TaskModel({title: 'Task 1', done: false}));
+let task1 = new TaskModel({title: 'Task 1', done: false});
+taskCollection.$add(task1);
 taskCollection.$add(new TaskModel({title: 'Task 2', done: true}));
 taskCollection.$add({title: 'Task 3'});
 
@@ -47,8 +48,8 @@ export default {
 			taskCollection.$add(model);
 			this.$refs.taskList.$forceUpdate();
 		},
-		deleteTask(id) {
-			this.tasks_ = this.tasks_.filter(task=>task.id != id);
+		deleteTask(cid) {
+			taskCollection.$remove(cid);
 		},
 		clearCompleted() {
 			this.tasks_ = this.tasks_.filter(task => !task.done);
