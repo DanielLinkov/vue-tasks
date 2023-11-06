@@ -38,9 +38,10 @@ const TaskModel = ModelFactory.createPersistent({
 		title: (val,model,addError)=>{
 			if(typeof val != 'string')
 				addError("Invalid title property type");
-			if(val.trim().length == 0)
+			val = val.trim();
+			if(val.length == 0)
 				addError("Title is empty");
-			return val.trim();
+			return val;
 		},
 	}
 });

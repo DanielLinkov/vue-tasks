@@ -3,24 +3,27 @@ import { TaskModel } from "./Classes.js";
 export default {
 	data() {
 		return {
-			disabled: true
+			newTask: new TaskModel(),
 		}
 	},
 	methods: {
-		onInput(e) {
-			this.disabled = e.target.value.trim().length === 0;
-		},
 		addTask() {
-			if(this.$refs.input.value.trim().length === 0) return;
 			this.$emit('add-task', {title: this.$refs.input.value.trim()});
-			this.disabled = true;
-			this.$refs.input.value = '';
+		},
+		onInput(){
+			this.newTask.title = this.newTask.$validate('title');
+			this.$forceUpdate();
 		}
+	},
+	mounted(){
+		this.newTask.$watch('title', (val)=>{
+			console.log('watch',this.newTask.$error.title);
+		});
 	},
 	template: /*html*/`
 		<div class="input-group">
-			<input type="text" class="form-control" @keypress.enter="addTask" ref="input" @input="onInput" placeholder="New task title">
-			<button class="btn btn-secondary" @click="addTask" :disabled="disabled">Add Task</button>
+			<input type="text" class="form-control" @input="onInput" @keypress.enter="addTask" ref="input" v-model="newTask.title" placeholder="New task title">
+			<button class="btn btn-secondary" @click="addTask" :disabled="!newTask.$isValidated('title') || newTask.$hasErrors('title')">Add Task</button>
 		</div>
-	`
+	```
 }
