@@ -2,6 +2,7 @@ import AddTaskComponent from "./AddTaskComponent.js";
 import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
 import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
+import { ViewAdapterVue } from "../lib/View.js";
 
 const configModel = new ConfigModel();
 const taskCollection = new TaskCollection();
@@ -13,6 +14,8 @@ taskCollection.$add({title: 'Task 3'});
 
 console.log(taskCollection);
 
+const viewAdapter = new ViewAdapterVue();
+
 export default {
 	components: {
 		'add-task-box': AddTaskComponent,
@@ -22,6 +25,7 @@ export default {
 	data(){
 		return {
 			config: configModel.$propState,
+			stateVersion: 0,
 		}
 	},
 	watch: {
@@ -31,6 +35,7 @@ export default {
 	},
 	computed:{
 		tasks(){
+			this.stateVersion;
 			if(this.config.showCompleted){
 				return taskCollection.$items;
 			}
@@ -46,10 +51,11 @@ export default {
 	methods: {
 		addTask(data) {
 			taskCollection.$add(data);
-			this.$refs.taskList.$forceUpdate();
+			viewAdapter.touch();
 		},
-		deleteTask(cid) {
-			taskCollection.$removeAt(cid);
+		deleteTask(ckey) {
+			taskCollection.$removeOne(ckey);
+			viewAdapter.touch();
 			this.$refs.taskList.$forceUpdate();
 		},
 		clearCompleted() {
@@ -58,6 +64,7 @@ export default {
 		},
 	},
 	created(){
+		viewAdapter.setNativeView(this,'stateVersion');
 		configModel.$fetch().then(result => {
 			if(result === true)	//Config exists and was updated
 				this.config = configModel.$propState;

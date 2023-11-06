@@ -27,14 +27,14 @@ export default {
 		onHandleMouseMove(e){
 		},
 		onHandleMouseUp(e){
-		}
+		},
 	},
 	template: /* html */`
 		<div class="list-group">
 			<div class="task-item-placeholder bg-body-secondary">
 				<task-item
 					v-for="task in tasks"
-					@delete:task="$emit('delete:task',task.$ckey)"
+					@delete:task="this.$emit('delete:task',task.$ckey)"
 					@update:editing="onUpdateEditing"
 					@mousedown="onHandleMouseDown"
 					@mousemove="onHandleMouseMove"
