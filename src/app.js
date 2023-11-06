@@ -49,7 +49,8 @@ export default {
 			this.$refs.taskList.$forceUpdate();
 		},
 		deleteTask(cid) {
-			taskCollection.$remove(cid);
+			taskCollection.$removeAt(cid);
+			this.$refs.taskList.$forceUpdate();
 		},
 		clearCompleted() {
 			this.tasks_ = this.tasks_.filter(task => !task.done);
