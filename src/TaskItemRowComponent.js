@@ -35,7 +35,7 @@ export default {
 	},
 	mounted(){
 		this.task.$watch('done',()=>{
-			// this.$forceUpdate();
+			this.$forceUpdate();
 		});
 	},
 	template: /* html */`
