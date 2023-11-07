@@ -15,6 +15,14 @@ const ConfigModel = ModelFactory.createPersistent({
 		theme: 'light',
 		showCompleted: true,
 	},
+	methods: {
+		title(){
+			return this.theme.toUpperCase();
+		},
+		color(){
+			return this.theme == 'light' ? 'primary' : 'dark';
+		}
+	},
 	storage: storage,
 	storageEntityName: 'config',
 	validators: {
@@ -31,6 +39,8 @@ const TaskModel = ModelFactory.createPersistent({
 	props: {
 		title: '',
 		done: false,
+	},
+	methods: {
 	},
 	validators: {
 		title: [(val,model,addError)=>{
