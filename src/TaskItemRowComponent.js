@@ -34,8 +34,8 @@ export default {
 		},
 	},
 	mounted(){
-		this.task.$watch('done',()=>{
-			this.$forceUpdate();
+		this.task.$attachToView(new ViewAdapterVue(this)).$watch('done',(val,propName,model)=>{
+			model.$updateView();
 		});
 	},
 	template: /* html */`

@@ -31,7 +31,6 @@
 			</div>
 			<div class="card-header">
 				<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
-				<button @click="onReload" class="btn btn-sm btn-secondary">Reload</button>
 			</div>
 			<div class="card-body">
 				<task-list :tasks="tasks" @delete:task="deleteTask" ref="taskList"></task-list>
@@ -39,6 +38,7 @@
 			<div class="card-footer bg-body">
 				<span>{{ count_tasks_left}} tasks left</span>
 				<button class="btn btn-sm btn-secondary float-end" :disabled="!count_tasks_completed" @click="clearCompleted">Clear Completed</button>
+				<button @click="onReload" class="btn btn-sm btn-secondary float-end">Reload</button>
 			</div>
 		</div>
 		<div class="offcanvas offcanvas-end" id="offcanvas-settings">
