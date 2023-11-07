@@ -33,11 +33,7 @@ const TaskModel = ModelFactory.createPersistent({
 		done: false,
 	},
 	persistent: {
-		$ckey: true,
-		done: false,
-		$className: true,
-		'$computed.color': true,
-		'$collection.$className': true,
+		'$collection?.$className': true,
 	},
 	methods: {
 		color(){
@@ -64,11 +60,15 @@ const TaskModel = ModelFactory.createPersistent({
 	}
 });
 
+
 const TaskCollection = CollectionFactory.createPersistent({
 	className : 'TaskCollection',
 	modelClass: TaskModel,
 	storage: storage,
 	storageEntityName: 'tasks',
+	saveOptions: {
+		timeout: 1000,
+	},	
 });
 
 export { ConfigModel, TaskModel, TaskCollection }

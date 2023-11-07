@@ -7,8 +7,6 @@ import { ViewAdapterVue } from "../lib/View.js";
 const configModel = new ConfigModel();
 const taskCollection = new TaskCollection();
 
-console.log(taskCollection);
-
 const view = new ViewAdapterVue();
 
 export default {
