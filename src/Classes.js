@@ -32,8 +32,6 @@ const TaskModel = ModelFactory.createPersistent({
 		title: '',
 		done: false,
 	},
-	storage: storage,
-	storageEntityName: 'tasks',
 	validators: {
 		title: [(val,model,addError)=>{
 			if(typeof val != 'string')

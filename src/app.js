@@ -7,10 +7,6 @@ import { ViewAdapterVue } from "../lib/View.js";
 const configModel = new ConfigModel();
 const taskCollection = new TaskCollection();
 
-taskCollection.$fetch().catch(async result=>{
-	console.warn('fetch error:',result);
-});
-
 console.log(taskCollection);
 
 const view = new ViewAdapterVue();
@@ -36,7 +32,7 @@ export default {
 		tasks(){
 			this.stateVersion;
 			if(this.config.showCompleted){
-				return taskCollection.$items;
+				return [...taskCollection.$items];
 			}
 			return taskCollection.$all(task => !task.done);
 		},
@@ -50,7 +46,8 @@ export default {
 	methods: {
 		addTask(data) {
 			taskCollection.$add(data);
-			view.touch();
+			taskCollection.$save();
+			view.touch().update();
 		},
 		deleteTask(ckey) {
 			taskCollection.$removeOne(ckey);
@@ -61,6 +58,25 @@ export default {
 			taskCollection.$removeWhere(task => task.done);
 			this.$refs.taskList.$forceUpdate();
 		},
+		onReload(){
+			taskCollection.$fetch({reset: false})
+				.then((res)=>{
+					view.touch();
+				})
+				.catch(async result=>{
+					console.warn('fetch error:',result);
+				});
+
+		}
+	},
+	mounted(){
+		taskCollection.$fetch()
+			.then((res)=>{
+				view.touch();
+			})
+			.catch(async result=>{
+				console.warn('fetch error:',result);
+			});
 	},
 	created(){
 		view.setNativeView(this,'stateVersion');
@@ -86,6 +102,5 @@ export default {
 			this.$watch('config.theme',fnChange);
 			this.$watch('config.showCompleted',fnChange);
 		});
-
 	}
 }
