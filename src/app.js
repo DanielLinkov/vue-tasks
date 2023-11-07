@@ -11,6 +11,7 @@ const task1 = new TaskModel({title: 'Task 1', done: false});
 taskCollection.$add(task1);
 taskCollection.$add(new TaskModel({title: 'Task 2', done: true}));
 taskCollection.$add({title: 'Task 3'});
+taskCollection.$save();
 
 console.log(taskCollection);
 

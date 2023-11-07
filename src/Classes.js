@@ -54,7 +54,7 @@ const TaskModel = ModelFactory.createPersistent({
 	}
 });
 
-const TaskCollection = CollectionFactory.create({
+const TaskCollection = CollectionFactory.createPersistent({
 	className : 'TaskCollection',
 	modelClass: TaskModel,
 	storage: storage,
