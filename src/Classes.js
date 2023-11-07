@@ -32,6 +32,10 @@ const TaskModel = ModelFactory.createPersistent({
 		title: '',
 		done: false,
 	},
+	persistent: {
+		$ckey: true,
+		done: false,
+	},
 	methods: {
 		color(){
 			return this.done ? 'green' : 'red';
