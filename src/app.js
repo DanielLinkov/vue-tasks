@@ -5,7 +5,6 @@ import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
 import { ViewAdapterVue } from "../lib/View.js";
 
 const configModel = new ConfigModel();
-console.log(configModel.$methods.color);
 const taskCollection = new TaskCollection();
 
 console.log(taskCollection);

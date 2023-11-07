@@ -39,7 +39,7 @@ export default {
 		});
 	},
 	template: /* html */`
-		<div class="list-group-item d-flex align-items-center hover-visible-container" :class="{'list-group-item-success': task.done}">
+		<div class="list-group-item d-flex align-items-center hover-visible-container" :class="{'list-group-item-success text-muted': task.done}">
 			<span
 				class="hover-visible-item drag-handle me-2"
 				@mousedown="$emit('mousedown')"
