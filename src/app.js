@@ -96,6 +96,11 @@ export default {
 					.then(result=>{
 						if(!result)
 							console.warn(configModel.$errors);
+						else{
+							console.log(configModel.$propState);
+							// this.config = configModel.$propState;
+							// view.touch();
+						}
 					})
 					.catch(result=>{
 						configModel.$revert();
