@@ -37,9 +37,11 @@ export default {
 			return taskCollection.$all(task => !task.done);
 		},
 		count_tasks_left(){
+			this.stateVersion;
 			return taskCollection.$all(task => !task.done).length;
 		},
 		count_tasks_completed(){
+			this.stateVersion;
 			return taskCollection.$all(task => task.done).length;
 		}
 	},
@@ -50,12 +52,13 @@ export default {
 			view.touch().update();
 		},
 		deleteTask(ckey) {
-			taskCollection.$removeOne(ckey);
+			taskCollection.$deleteOne(ckey);
 			view.touch();
 			this.$refs.taskList.$forceUpdate();
 		},
 		clearCompleted() {
-			taskCollection.$removeWhere(task => task.done);
+			taskCollection.$deleteWhere(task => task.done);
+			view.touch();
 			this.$refs.taskList.$forceUpdate();
 		},
 		onReload(){
