@@ -1,6 +1,6 @@
 import { ModelFactory } from '../lib/ModelFactory.js';
 import { CollectionFactory } from "../lib/CollectionFactory.js";
-import { RestApiJsonClient,LocalStorage } from "../lib/Persistence.js";
+import { RestApiJsonClient,LocalStorage } from "../lib/Storages.js";
 
 const storage = new RestApiJsonClient({
 	baseUrl : 'http://localhost:3000',

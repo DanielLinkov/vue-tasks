@@ -7,15 +7,13 @@ import { ViewAdapterVue } from "../lib/View.js";
 const configModel = new ConfigModel();
 const taskCollection = new TaskCollection();
 
-const task1 = new TaskModel({title: 'Task 1', done: false});
-taskCollection.$add(task1);
-taskCollection.$add(new TaskModel({title: 'Task 2', done: true}));
-taskCollection.$add({title: 'Task 3'});
-taskCollection.$save();
+taskCollection.$fetch().catch(async result=>{
+	console.warn('fetch error:',result);
+});
 
 console.log(taskCollection);
 
-const viewAdapter = new ViewAdapterVue();
+const view = new ViewAdapterVue();
 
 export default {
 	components: {
@@ -52,11 +50,11 @@ export default {
 	methods: {
 		addTask(data) {
 			taskCollection.$add(data);
-			viewAdapter.touch();
+			view.touch();
 		},
 		deleteTask(ckey) {
 			taskCollection.$removeOne(ckey);
-			viewAdapter.touch();
+			view.touch();
 			this.$refs.taskList.$forceUpdate();
 		},
 		clearCompleted() {
@@ -65,7 +63,7 @@ export default {
 		},
 	},
 	created(){
-		viewAdapter.setNativeView(this,'stateVersion');
+		view.setNativeView(this,'stateVersion');
 		configModel.$fetch().then(result => {
 			if(result === true)	//Config exists and was updated
 				this.config = configModel.$propState;
