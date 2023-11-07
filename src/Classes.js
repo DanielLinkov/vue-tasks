@@ -35,6 +35,9 @@ const TaskModel = ModelFactory.createPersistent({
 	persistent: {
 		$ckey: true,
 		done: false,
+		$className: true,
+		'$computed.color': true,
+		'$collection.$className': true,
 	},
 	methods: {
 		color(){
