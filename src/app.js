@@ -10,9 +10,9 @@ const taskCollection = new TaskCollection({
 });
 
 const fn = (event,record)=>{
-	console.log('event:',event,record.values);
+	console.log('event:',event,record);
 }
-configModel.$on('change:showCompleted.500.once',fn);
+configModel.$on('change.500.x5',fn);
 configModel.theme = 'blue';
 configModel.showCompleted = false;
 configModel.showCompleted = true;
