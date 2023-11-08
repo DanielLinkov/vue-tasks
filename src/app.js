@@ -5,7 +5,13 @@ import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
 import { ViewAdapterVue } from "../lib/View.js";
 
 const configModel = new ConfigModel();
-const taskCollection = new TaskCollection();
+const taskCollection = new TaskCollection({
+	tag: 'default',
+});
+
+configModel.$on('change:theme.stop',()=>{
+});
+console.log('configModel:',configModel);
 
 const view = new ViewAdapterVue();
 

@@ -33,7 +33,9 @@ const TaskModel = ModelFactory.createPersistent({
 		done: false,
 	},
 	persistent: {
-		'$collection?.$className': true,
+	},
+	events: {
+		// 'change:done': (event)=>{ },
 	},
 	methods: {
 		color(){
