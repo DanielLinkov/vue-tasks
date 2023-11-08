@@ -9,9 +9,16 @@ const taskCollection = new TaskCollection({
 	tag: 'default',
 });
 
-configModel.$on('change:theme.stop',()=>{
-});
-console.log('configModel:',configModel);
+const fn = (event,record)=>{
+	console.log('event:',event,record.values);
+}
+configModel.$on('change:showCompleted.500.once',fn);
+configModel.theme = 'blue';
+configModel.showCompleted = false;
+configModel.showCompleted = true;
+configModel.theme = 'violet';
+configModel.theme = 'purple';
+console.log(configModel);
 
 const view = new ViewAdapterVue();
 
