@@ -9,15 +9,10 @@ const taskCollection = new TaskCollection({
 	tag: 'default',
 });
 
-const fn = (event,record)=>{
-	console.log('event:',event,record);
+const fn = (event,eventRecord)=>{
+	console.log('event:',event);
 }
-configModel.$on('change.500.x5',fn);
-configModel.theme = 'blue';
-configModel.showCompleted = false;
-configModel.showCompleted = true;
-configModel.theme = 'violet';
-configModel.theme = 'purple';
+configModel.$on('destroy',fn);
 console.log(configModel);
 
 const view = new ViewAdapterVue();
