@@ -9,12 +9,12 @@ const taskCollection = new TaskCollection({
 	tag: 'default',
 });
 
-const fn = (event,eventRecord)=>{
-	console.log('event:',event);
-}
-configModel.$on('destroy',fn);
-console.log(configModel);
-
+configModel.$on('change.sync',function(event,record){
+	console.log('configModel change',this,event,record);
+},configModel);
+configModel.$on('change.sync',(event,record)=>{
+	console.log('configModel change',this,event,record);
+});
 const view = new ViewAdapterVue();
 
 export default {
