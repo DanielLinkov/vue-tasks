@@ -4,17 +4,17 @@ import CheckboxComponent from "./CheckboxComponent.js";
 import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
 import { ViewAdapterVue } from "../lib/View.js";
 
-const configModel = new ConfigModel();
+const configModel = new ConfigModel({},{
+	events: {
+		'change': ()=>{
+			console.log("Config Model change instance event");
+		}
+	},
+});
 const taskCollection = new TaskCollection({
 	tag: 'default',
 });
 
-configModel.$on('change.sync',function(event,record){
-	console.log('configModel change',this,event,record);
-},configModel);
-configModel.$on('change.sync',(event,record)=>{
-	console.log('configModel change',this,event,record);
-});
 const view = new ViewAdapterVue();
 
 export default {

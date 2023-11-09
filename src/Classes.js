@@ -23,6 +23,11 @@ const ConfigModel = ModelFactory.createPersistent({
 				addError("Invalid theme");
 		},
 	},
+	events: {
+		'change': ()=>{
+			console.log("Config Model change class event");
+		}
+	},
 });
 
 
@@ -34,8 +39,6 @@ const TaskModel = ModelFactory.createPersistent({
 	},
 	persistent: {
 	},
-	events: [
-	],
 	methods: {
 		color(){
 			return this.done ? 'green' : 'red';
