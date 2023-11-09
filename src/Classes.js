@@ -24,9 +24,6 @@ const ConfigModel = ModelFactory.createPersistent({
 		},
 	},
 	events: {
-		'change': ()=>{
-			console.log("Config Model change class event");
-		}
 	},
 });
 
@@ -44,6 +41,8 @@ const TaskModel = ModelFactory.createPersistent({
 			return this.done ? 'green' : 'red';
 		}
 	},
+	events: [
+	],
 	validators: {
 		title: [(val,model,addError)=>{
 			if(typeof val != 'string')

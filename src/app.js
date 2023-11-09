@@ -5,11 +5,6 @@ import { ConfigModel, TaskCollection, TaskModel } from "./Classes.js";
 import { ViewAdapterVue } from "../lib/View.js";
 
 const configModel = new ConfigModel({},{
-	events: {
-		'change': ()=>{
-			console.log("Config Model change instance event");
-		}
-	},
 });
 const taskCollection = new TaskCollection({
 	tag: 'default',
