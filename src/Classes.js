@@ -42,6 +42,9 @@ const TaskModel = ModelFactory.createPersistent({
 		}
 	},
 	events: [
+		['sync',function(event){
+			console.log("TaskModel.delete",event);
+		}]
 	],
 	validators: {
 		title: [(val,model,addError)=>{

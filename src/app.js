@@ -84,12 +84,12 @@ export default {
 	},
 	created(){
 		view.setNativeView(this,'stateVersion');
-		configModel.$fetch().then(result => {
-			if(result === true)	//Config exists and was updated
+		configModel.$on('sync',(event)=>{
+			console.log(event);
+			if(event.isRead)
 				this.config = configModel.$propState;
-		},result=>{
-			console.error('fetch error:',result);
-		})
+		});
+		configModel.$fetch()
 		.finally(()=>{
 			const fnChange = ()=>{
 				configModel.$update(this.config);
