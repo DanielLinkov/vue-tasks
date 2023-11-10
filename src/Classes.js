@@ -43,7 +43,13 @@ const TaskModel = ModelFactory.createPersistent({
 	},
 	events: [
 		['sync',function(event){
-			console.log("TaskModel.delete",event);
+			console.log("TaskModel.sync",event);
+		}],
+		['attach',function(event){
+			console.log("TaskModel.attach",event);
+		}],
+		['detach',function(event){
+			console.log("TaskModel.detach",event);
 		}]
 	],
 	validators: {
@@ -75,6 +81,17 @@ const TaskCollection = CollectionFactory.createPersistent({
 	saveOptions: {
 		timeout: 1000,
 	},	
+	events:	{
+		'add.sync': function(event){
+			console.log("TaskCollection.add",event);
+		},
+		'remove.sync': function(event){
+			console.log("TaskCollection.remove",event);
+		},
+		'delete.sync': function(event){
+			console.log("TaskCollection.delete",event);
+		}
+	}
 });
 
 export { ConfigModel, TaskModel, TaskCollection }
