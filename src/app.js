@@ -83,6 +83,12 @@ export default {
 			});
 	},
 	created(){
+		taskCollection.$on('add.sync',(event)=>{
+			event.model.$on('change:done',view.touch,view);
+		});
+		taskCollection.$on('delete.sync',(event)=>{
+			event.model.$off('change:done',view.touch,view);
+		});
 		view.setNativeView(this,'stateVersion');
 		configModel.$on('sync.read',(event)=>{
 			this.config = configModel.$propState;

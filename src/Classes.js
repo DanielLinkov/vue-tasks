@@ -83,15 +83,6 @@ const TaskCollection = CollectionFactory.createPersistent({
 		timeout: 1000,
 	},	
 	events:	{
-		// 'add.sync': function(event){
-		// 	console.log("TaskCollection.add",event);
-		// },
-		// 'remove.sync': function(event){
-		// 	console.log("TaskCollection.remove",event);
-		// },
-		// 'delete.sync': function(event){
-		// 	console.log("TaskCollection.delete",event);
-		// }
 	}
 });
 
