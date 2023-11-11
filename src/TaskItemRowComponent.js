@@ -16,19 +16,25 @@ export default {
 	watch: {
 		editing(val){
 			if(val){
-				this.$emit('update:editing',this.task.id);
+				this.$emit('update:editing',this.task.$ckey);
+				setTimeout(()=>{
+					this.$refs.input.focus();
+				},0);
 			}
 		},
 		editedTaskId(val){
-			if(val != this.task.id){
+			if(val != this.task.$ckey){
 				this.editing = false;
 			}
 		}
 	},
 	methods: {
-		onUpdateEditing(val){
-			if(typeof val == 'string'){
-				this.task.title = val;
+		onUpdateEditing(){
+			this.task.$validate('title');
+			if(!this.task.$hasErrors('title')){
+				this.task.$collection.$save();
+			}else{
+				this.task.$revert();
 			}
 			this.editing = false;
 		},
@@ -38,23 +44,28 @@ export default {
 			model.$updateView();
 		});
 	},
+	created(){
+		this.elId = _.uniqueId('_vue_checkbox_');
+	},
 	template: /* html */`
-		<div class="list-group-item d-flex align-items-center hover-visible-container" :class="{'list-group-item-success': task.done}">
+		<div class="list-group-item d-flex align-items-center hover-visible-container" :class="{'list-group-item-success': task.done,'task-done': task.done}">
 			<span
 				class="hover-visible-item drag-handle me-2"
-				@mousedown="$emit('mousedown')"
-				@mousemove="$emit('mousemove')"
-				@mouseup="$emit('mouseup')"
 			><i class="bi bi-grip-horizontal"></i></span>
-			<labeled-checkbox
-				class="me-auto"
-				:editing="editing"
-				:edited-value="task.title"
-				:class="{'task-done': task.done}"
-				v-model="task.done"
-				@update:editing="onUpdateEditing"
-				><span class="label">{{ task.title }}</span> <sup v-if="task.done">(completed)</sup>
-			</labeled-checkbox>
+			<div class="form-check me-auto" v-show="!editing">
+				<input type="checkbox" v-model="task.done" class="form-check-input" :id="elId">
+				<label class="form-check-label" :for="elId" ref="label"><slot>
+					<span class="label">{{ task.title }}</span> <sup v-if="task.done">(completed)</sup>
+				</slot></label>
+			</div>
+			<input
+				v-show="editing"
+				v-model="task.title"
+				@keypress.enter="onUpdateEditing"
+				ref="input"
+				type="text"
+				class="form-control"
+			/>
 			<div class="btn-group hover-visible-item">
 				<button class="btn btn-secondary" title="Edit task" v-if="!editing" @click="this.editing = true"><i class="bi bi-pencil"></i></button>
 				<button class="btn btn-link" v-if="editing" @click="this.editing = false">cancel</button>
