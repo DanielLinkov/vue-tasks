@@ -42,6 +42,9 @@ const TaskModel = ModelFactory.createPersistent({
 		}
 	},
 	events: [
+		['validate',function(event){
+			console.log("TaskModel.validate",event);
+		}],
 		['sync',function(event){
 			console.log("TaskModel.sync",event);
 		}],
