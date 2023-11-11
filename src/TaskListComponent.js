@@ -34,7 +34,7 @@ export default {
 			<div class="task-item-placeholder bg-body-secondary">
 				<task-item
 					v-for="task in tasks"
-					@delete:task="this.$emit('delete:task',task.$ckey)"
+					@delete:task="this.$emit('delete:task',task.$ckey,$event)"
 					@update:editing="onUpdateEditing"
 					@mousedown="onHandleMouseDown"
 					@mousemove="onHandleMouseMove"

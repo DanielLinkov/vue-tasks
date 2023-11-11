@@ -71,7 +71,7 @@ export default {
 				<button class="btn btn-secondary" title="Edit task" v-if="!editing" @click="this.editing = true"><i class="bi bi-pencil"></i></button>
 				<button class="btn btn-link" v-if="editing" @click="this.editing = false">cancel</button>
 				<button
-					@click="$emit('delete:task')"
+					@click="$emit('delete:task',this)"
 					type="button" class="btn btn-danger btn-sm"
 				>Delete</button>
 			</div>

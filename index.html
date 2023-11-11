@@ -37,7 +37,7 @@
 			</div>
 			<div class="card-footer bg-body">
 				<span>{{ count_tasks_left}} tasks left</span>
-				<button class="btn btn-sm btn-secondary float-end" :disabled="!count_tasks_completed" @click="clearCompleted">Clear Completed</button>
+				<button class="btn btn-sm btn-secondary float-end" :disabled="!count_tasks_completed || !config.showCompleted" @click="clearCompleted">Clear Completed</button>
 				<button @click="onReload" class="btn btn-sm btn-secondary float-end">Reload</button>
 			</div>
 		</div>

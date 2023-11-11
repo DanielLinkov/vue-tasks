@@ -52,10 +52,14 @@ export default {
 			taskCollection.$save();
 			view.touch().update();
 		},
-		deleteTask(ckey) {
-			taskCollection.$deleteOne(ckey);
-			view.touch();
-			this.$refs.taskList.$forceUpdate();
+		deleteTask(ckey,task_item_component) {
+			task_item_component.$el.addEventListener('animationend',()=>{
+				taskCollection.$deleteOne(ckey);
+				view.touch();
+				this.$refs.taskList.$forceUpdate();
+			});
+			task_item_component.$el.style.setProperty('--item-height',task_item_component.$el.offsetHeight+'px')
+			task_item_component.$el.classList.add('animate__task-delete');
 		},
 		clearCompleted() {
 			taskCollection.$deleteWhere(task => task.done);
@@ -83,11 +87,15 @@ export default {
 			});
 	},
 	created(){
+		const fnChange = (event)=>{
+			view.touch();
+			event.target.$collection.$save();
+		}
 		taskCollection.$on('add.sync',(event)=>{
-			event.model.$on('change:done',view.touch,view);
+			event.model.$on('change:done',fnChange);
 		});
 		taskCollection.$on('delete.sync',(event)=>{
-			event.model.$off('change:done',view.touch,view);
+			event.model.$off('change:done',fnChange);
 		});
 		view.setNativeView(this,'stateVersion');
 		configModel.$on('sync.read',(event)=>{

@@ -30,3 +30,21 @@ label{
     border-bottom-right-radius: inherit;
     border-bottom-left-radius: inherit;
 }
+
+@keyframes animate_task-delete {
+	from{
+		left:0;
+		opacity: 1;
+		margin-bottom:0;
+	}	
+	to{
+		left:-200px;
+		margin-bottom: calc(0px - var(--item-height));
+		opacity: 0;
+	}
+}
+
+.animate__task-delete{
+	position: relative;
+	animation: animate_task-delete .3s ease-in-out;
+}
