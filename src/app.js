@@ -84,10 +84,8 @@ export default {
 	},
 	created(){
 		view.setNativeView(this,'stateVersion');
-		configModel.$on('sync',(event)=>{
-			console.log(event);
-			if(event.isRead)
-				this.config = configModel.$propState;
+		configModel.$on('sync.read',(event)=>{
+			this.config = configModel.$propState;
 		});
 		configModel.$fetch()
 		.finally(()=>{

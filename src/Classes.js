@@ -42,18 +42,15 @@ const TaskModel = ModelFactory.createPersistent({
 		}
 	},
 	events: [
-		['validate',function(event){
-			console.log("TaskModel.validate",event);
-		}],
-		['sync',function(event){
-			console.log("TaskModel.sync",event);
-		}],
-		['attach',function(event){
-			console.log("TaskModel.attach",event);
-		}],
-		['detach',function(event){
-			console.log("TaskModel.detach",event);
-		}]
+		// ['sync',function(event){
+		// 	console.log("TaskModel.sync",event);
+		// }],
+		// ['attach',function(event){
+		// 	console.log("TaskModel.attach",event);
+		// }],
+		// ['detach',function(event){
+		// 	console.log("TaskModel.detach",event);
+		// }]
 	],
 	validators: {
 		title: [(val,model,addError)=>{
@@ -62,6 +59,7 @@ const TaskModel = ModelFactory.createPersistent({
 			val = val.trim();
 			if(val.length == 0)
 				addError("Title is empty");
+			return val;
 		},(val)=>{
 			return val.toUpperCase();
 		},(val)=>{
@@ -85,15 +83,15 @@ const TaskCollection = CollectionFactory.createPersistent({
 		timeout: 1000,
 	},	
 	events:	{
-		'add.sync': function(event){
-			console.log("TaskCollection.add",event);
-		},
-		'remove.sync': function(event){
-			console.log("TaskCollection.remove",event);
-		},
-		'delete.sync': function(event){
-			console.log("TaskCollection.delete",event);
-		}
+		// 'add.sync': function(event){
+		// 	console.log("TaskCollection.add",event);
+		// },
+		// 'remove.sync': function(event){
+		// 	console.log("TaskCollection.remove",event);
+		// },
+		// 'delete.sync': function(event){
+		// 	console.log("TaskCollection.delete",event);
+		// }
 	}
 });
 
