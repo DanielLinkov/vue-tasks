@@ -53,13 +53,13 @@ export default {
 			view.touch().update();
 		},
 		deleteTask(ckey,task_item_component) {
+			//Animate task entry deletion
 			task_item_component.$el.addEventListener('animationend',()=>{
 				taskCollection.$deleteOne(ckey);
 				view.touch();
-				this.$refs.taskList.$forceUpdate();
 			});
-			task_item_component.$el.style.setProperty('--item-height',task_item_component.$el.offsetHeight+'px')
-			task_item_component.$el.classList.add('animate__task-delete');
+			task_item_component.$el.style.setProperty('--item-height',task_item_component.$el.offsetHeight+'px');	// Set the height of the element to animate
+			task_item_component.$el.classList.add('animate__task-delete');	// Add the animation class to start the animation
 		},
 		clearCompleted() {
 			taskCollection.$deleteWhere(task => task.done);
