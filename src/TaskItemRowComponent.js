@@ -40,7 +40,7 @@ export default {
 			this.editing = false;
 		},
 		onDelete(){
-			this.task.$collection?.$deleteOne(this.task.$ckey);
+			this.task.$delete({destroy:false});
 		}
 	},
 	mounted(){

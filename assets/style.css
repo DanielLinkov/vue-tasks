@@ -47,4 +47,5 @@ label{
 .animate__task-delete{
 	position: relative;
 	animation: animate_task-delete .3s ease-in-out;
+	animation-fill-mode: forwards;
 }
