@@ -25,6 +25,7 @@ export default {
 		editedTaskId(val){
 			if(val != this.task.$ckey){
 				this.editing = false;
+				this.task.$revert();
 			}
 		}
 	},
@@ -37,6 +38,10 @@ export default {
 			}else{
 				this.task.$revert();
 			}
+			this.editing = false;
+		},
+		onCancel(){
+			this.task.$revert();
 			this.editing = false;
 		},
 		onDelete(){
@@ -66,13 +71,14 @@ export default {
 				v-show="editing"
 				v-model="task.title"
 				@keypress.enter="onUpdateEditing"
+				@keydown.esc="onCancel"
 				ref="input"
 				type="text"
 				class="form-control"
 			/>
 			<div class="btn-group hover-visible-item">
 				<button class="btn btn-secondary" title="Edit task" v-if="!editing" @click="this.editing = true"><i class="bi bi-pencil"></i></button>
-				<button class="btn btn-link" v-if="editing" @click="this.editing = false">cancel</button>
+				<button class="btn btn-link" v-if="editing" @click="onCancel">cancel</button>
 				<button
 					@click="onDelete"
 					type="button" class="btn btn-danger btn-sm"
