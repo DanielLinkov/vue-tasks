@@ -27,6 +27,22 @@ const ConfigModel = ModelFactory.createPersistent({
 	},
 });
 
+const NewTaskModel = ModelFactory.create({
+	className : 'NewTaskModel',
+	props: {
+		title: '',
+	},
+	validators: {
+		title: (val,model,addError)=>{
+			if(typeof val != 'string')
+				addError("Invalid title property type");
+			val = val.replace(/\s+/g,' ');
+			val = val.trim();
+			if(val.length == 0)
+				addError("Title is empty");
+		},
+	}
+});
 
 const TaskModel = ModelFactory.createPersistent({
 	className : 'TaskModel',
@@ -42,15 +58,6 @@ const TaskModel = ModelFactory.createPersistent({
 		}
 	},
 	events: [
-		// ['sync',function(event){
-		// 	console.log("TaskModel.sync",event);
-		// }],
-		// ['attach',function(event){
-		// 	console.log("TaskModel.attach",event);
-		// }],
-		// ['detach',function(event){
-		// 	console.log("TaskModel.detach",event);
-		// }]
 	],
 	validators: {
 		title: [(val,model,addError)=>{
@@ -87,4 +94,4 @@ const TaskCollection = CollectionFactory.createPersistent({
 	}
 });
 
-export { ConfigModel, TaskModel, TaskCollection }
+export { ConfigModel, TaskModel, NewTaskModel, TaskCollection }

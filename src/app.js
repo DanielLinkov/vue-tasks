@@ -20,6 +20,9 @@ export default {
 		'task-list': TaskListComponent,
 		'labeled-checkbox': CheckboxComponent,
 	},
+	provide: {
+		taskCollection,
+	},
 	data(){
 		return {
 			config: configModel.$propState,
