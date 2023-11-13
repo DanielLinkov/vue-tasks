@@ -16,6 +16,7 @@ export default {
 	inject: ['taskCollection'],
 	methods: {
 		addTask() {
+			this.newTask.$call('transform');
 			this.$emit('add-task', {title: this.newTask.title});	// emit event to parent with a dummy model
 			//#TODO: put hooks for property transformation
 			this.newTask.title = '';
@@ -23,7 +24,7 @@ export default {
 			this.$forceUpdate();
 		},
 		onChange(){
-			this.newTask.title = this.newTask.$validate('title');
+			this.newTask.$validate('title');
 			this.$forceUpdate();
 		},
 		onKeypressEnter(){

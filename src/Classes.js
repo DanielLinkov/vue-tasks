@@ -41,6 +41,11 @@ const NewTaskModel = ModelFactory.create({
 			if(val.length == 0)
 				addError("Title is empty");
 		},
+	},
+	methods: {
+		transform: function(){
+			this.title = this.title.trim();
+		}
 	}
 });
 
