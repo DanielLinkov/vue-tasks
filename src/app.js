@@ -52,19 +52,8 @@ export default {
 			taskCollection.$save();
 			view.touch().update();
 		},
-		deleteTask(ckey,task_item_component) {
-			//Animate task entry deletion
-			task_item_component.$el.addEventListener('animationend',()=>{
-				taskCollection.$deleteOne(ckey);
-				view.touch();
-			});
-			task_item_component.$el.style.setProperty('--item-height',task_item_component.$el.offsetHeight+'px');	// Set the height of the element to animate
-			task_item_component.$el.classList.add('animate__task-delete');	// Add the animation class to start the animation
-		},
 		clearCompleted() {
 			taskCollection.$deleteWhere(task => task.done);
-			view.touch();
-			this.$refs.taskList.$forceUpdate();
 		},
 		onReload(){
 			taskCollection.$fetch({reset: false})
@@ -93,6 +82,13 @@ export default {
 		}
 		taskCollection.$on('add.sync',(event)=>{
 			event.model.$on('change:done',fnChange);
+			event.model.$on('detach',()=>{
+				event.model.$view.$nativeView.$el.addEventListener('animationend',()=>{
+					view.touch();
+				});
+				event.model.$view.$nativeView.$el.style.setProperty('--item-height',event.model.$view.$nativeView.$el.offsetHeight+'px');	// Set the height of the element to animate
+				event.model.$view.$nativeView.$el.classList.add('animate__task-delete');	// Add the animation class to start the animation
+			});
 		});
 		taskCollection.$on('delete.sync',(event)=>{
 			event.model.$off('change:done',fnChange);

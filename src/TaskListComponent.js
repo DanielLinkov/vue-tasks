@@ -29,6 +29,8 @@ export default {
 		onHandleMouseUp(e){
 		},
 	},
+	mounted(){
+	},
 	template: /* html */`
 		<div class="list-group">
 			<div class="task-item-placeholder bg-body-secondary">
