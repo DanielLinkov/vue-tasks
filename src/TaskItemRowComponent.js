@@ -30,10 +30,10 @@ export default {
 		}
 	},
 	methods: {
-		onUpdateEditing(){
-			const transformedTitle = this.task.$validate('title');
+		async onUpdateEditing(){
+			await this.task.$validate('title');
 			if(!this.task.$hasErrors('title')){
-				this.task.title = transformedTitle;
+				this.task.$call('transform');
 				this.task.$collection.$save();
 			}else{
 				this.task.$revert();

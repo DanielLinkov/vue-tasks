@@ -58,6 +58,11 @@ const TaskModel = ModelFactory.createPersistent({
 	persistent: {
 	},
 	methods: {
+		transform: function(){
+			this.title = this.title.replace(/\s+/g,' ');
+			this.title = this.title.toUpperCase();
+			this.title = this.title.trim();
+		},
 		color(){
 			return this.done ? 'green' : 'red';
 		}

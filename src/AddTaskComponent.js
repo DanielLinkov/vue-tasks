@@ -5,10 +5,19 @@ export default {
 		return {
 			newTask: new NewTaskModel({},{
 				validators: {
-					title: (val,model,addError)=>{
+					title: [(val,model,addError)=>{
 						if(this.taskCollection.$one(task => task.title == val))
 							addError("Task with this title already exists");
-					}
+					},
+					async (val,model,addError)=>{
+						try{
+							const result = await this.taskCollection.$storageQuery.search({title: val})
+							if(result.length > 0)
+								addError("Task with this title already exists in storage");
+						}catch(e){
+							addError("Error while checking for title uniqueness: " + e.message);
+						}
+					},]
 				}
 			}),
 		}
@@ -23,12 +32,12 @@ export default {
 			this.newTask.$clearErrors('title');
 			this.$forceUpdate();
 		},
-		onChange(){
-			this.newTask.$validate('title');
+		async onChange(){
+			await this.newTask.$validate('title');
 			this.$forceUpdate();
 		},
-		onKeypressEnter(){
-			this.onChange();
+		async onKeypressEnter(){
+			await this.onChange();
 			if(!this.newTask.$hasErrors('title')){
 				this.addTask();
 			}
