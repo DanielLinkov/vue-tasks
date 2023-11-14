@@ -30,7 +30,7 @@ const ConfigModel = ModelFactory.createPersistent({
 const NewTaskModel = ModelFactory.create({
 	className : 'NewTaskModel',
 	props: {
-		title: '',
+		title: ''
 	},
 	validators: {
 		title: (val,model,addError)=>{
