@@ -8,10 +8,11 @@ export default {
 			isTaskValidated: false,
 			isTaskValid: false,
 			timerIdValidate: null,
+			validationMessage: null,
 			newTask: new NewTaskModel({},{
 				validators: {
 					title: [(val,model,addError)=>{
-						if(this.taskCollection.$one(task => task.title == val))
+						if(this.currentTaskCollection.$one(task => task.title == val))
 							addError("Task with this title already exists");
 					},
 					async (val,model,addError)=>{
@@ -22,7 +23,8 @@ export default {
 							if(model.$hasErrors('title'))
 								return;
 							abortController = null;
-							const result = await this.taskCollection.$storageQuery.search({title: val},(controller)=>{
+							this.validationMessage = 'Checking for title uniqueness...';
+							const result = await this.currentTaskCollection.$storageQuery.search({title: val},(controller)=>{
 								abortController = controller;
 							});
 							if(result.length > 0)
@@ -32,12 +34,13 @@ export default {
 								throw e;
 							addError("Error while checking for title uniqueness: " + e.message);
 						}
+						this.validationMessage = null;
 					},]
 				}
 			}),
 		}
 	},
-	inject: ['taskCollection'],
+	inject: ['currentTaskCollection'],
 	methods: {
 		addTask() {
 			this.isTaskValid = false;
@@ -52,9 +55,10 @@ export default {
 			this.isTaskValidated = false;
 			clearTimeout(this.timerIdValidate);
 			const timerIdSpin = setTimeout(()=>{
-				this.$refs.spinner.classList.remove('d-none');
+				this.$refs.spinner_box.classList.remove('d-none');
 			},500);
 			const ret =await this.newTask.$validate('title');
+			clearTimeout(timerIdSpin);
 			if(!ret)	// validation was aborted
 				return;
 			this.timerIdValidate = setTimeout(() => {
@@ -63,8 +67,7 @@ export default {
 					this.isTaskValid = true;
 				}
 			}, 10);
-			clearTimeout(timerIdSpin);
-			this.$refs.spinner.classList.add('d-none');
+			this.$refs.spinner_box.classList.add('d-none');
 			this.$forceUpdate();
 		},
 		async onKeypressEnter(){
@@ -81,11 +84,14 @@ export default {
 	template: /*html*/`
 		<div class="position-relative">
 			<div class="input-group" :class="{ 'is-invalid': isTaskValidated && newTask.$hasErrors('title')}">
-				<input type="text" class="form-control" @input="onChange" @keypress.enter="onKeypressEnter" ref="input" v-model="newTask.title" :class="{'is-valid': isTaskValidated && !newTask.$hasErrors('title'), 'is-invalid': isTaskValid === false || isTaskValidated && newTask.$hasErrors('title')}" placeholder="New task title">
+				<input type="text" class="form-control" @input="onChange" @keypress.enter="onKeypressEnter" ref="input" v-model="newTask.title" :class="{'is-valid': isTaskValidated && !newTask.$hasErrors('title'), 'is-invalid': isTaskValid === false || isTaskValidated && newTask.$hasErrors('title')}" placeholder="Enter task title">
 				<button class="btn btn-primary" :class="{'btn-danger': !isTaskValid || !isTaskValidated || newTask.$hasErrors('title')}" @click="addTask" :disabled="!isTaskValid || !isTaskValidated || newTask.$hasErrors('title')">Add Task</button>
 			</div>
 			<div class="invalid-tooltip">{{ newTask.$error.title }}</div>
-			<div class="spinner-border spinner-border-sm d-none position-absolute m-2" ref="spinner"></div>
+			<div ref="spinner_box" class="d-none">
+				<div class="spinner-border spinner-border-sm position-absolute m-2 text-warning-emphasis" ref="spinner"></div>
+				<div class="position-absolute m-1 ms-4 text-warning-emphasis" v-if="validationMessage">&nbsp;{{ validationMessage }}</div>
+			</div>
 		</div>
 	`
 }

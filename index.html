@@ -22,19 +22,31 @@
 			<div class="card-header position-relative">
 				<div class="text-danger position-absolute top-0 start-0 p-2" v-if="errorMessage"><i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}</div>
 				<h4 class="text-end">
-					Task List
+					Task Lists
 					<button class="btn btn-sm btn-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings"><i class="bi bi-gear-fill text-white"></i></button>
 				</h4>
 			</div>
 
 			<div class="card-body">
-				<add-task-box @add-task="addTask"></add-task-box>
+				<add-task-box v-if="currentTaskCollection" @add-task="addTask"></add-task-box>
 			</div>
 			<div class="card-header">
-				<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
+				<div class="row">
+					<div class="col-8">
+						<select class="form-select" ref="taskListSelector" disabled @change="onTaskListSelected">
+							<option value="" selected>Select task list</option>
+							<option v-for="taskCollection in taskListCollection" :value="taskCollection.$key">{{ taskCollection.name }}</option>
+							<option value="new">[New Task List]</option>
+						</select>
+					</div>
+					<div class="col-4">
+						<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
+					</div>
+				</div>
 			</div>
 			<div class="card-body">
-				<task-list :tasks="tasks" ref="taskList"></task-list>
+				<task-list v-if="currentTaskCollection" :tasks="tasks" ref="taskList"></task-list>
+				<div v-if="!currentTaskCollection"><em>Select a task list from the dropdown above</em></div>
 			</div>
 			<div class="card-footer bg-body">
 				<span>{{ count_tasks_left}} tasks left</span>
@@ -59,7 +71,9 @@
 		</div>
 	</div>
 	<script src="./node_modules/lodash/lodash.min.js"></script>
+	<script src="./node_modules/jquery/dist/jquery.slim.min.js"></script>
 	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="./node_modules/bootbox/dist/bootbox.min.js"></script>
 	<script type="module" src="./src/index.js"></script>
 
 </body>

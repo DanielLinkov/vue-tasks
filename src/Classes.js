@@ -104,4 +104,20 @@ const TaskCollection = CollectionFactory.createPersistent({
 	}
 });
 
-export { ConfigModel, TaskModel, NewTaskModel, TaskCollection }
+const TaskCollectionModel = ModelFactory.createPersistent({
+	className : 'TaskCollectionModel',
+	props: {
+		name: '',
+		list: null,
+	},
+	persistent: { list: false }
+});
+
+const TaskListCollection = CollectionFactory.createPersistent({
+	className : 'TaskListCollection',
+	modelClass: TaskCollectionModel,
+	storage: storage,
+	storageEntityName: 'task_lists',
+});
+
+export { ConfigModel, TaskModel, NewTaskModel, TaskCollection, TaskCollectionModel, TaskListCollection }
