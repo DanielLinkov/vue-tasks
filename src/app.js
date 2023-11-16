@@ -124,8 +124,8 @@ export default {
 			}
 			if(this.currentTaskCollectionModel?.list.$items.length > 0){
 				bootbox.confirm({
-					title: "Task list is not empty!",
-					message: "Are you sure you want to delete this task list?",
+					title: "<div class='text-warning'><i class='bi bi-exclamation-triangle'></i> Task list is not empty!</div>",
+					message: "Are you sure you want to DELETE this task list and ALL TASKS inside it?",
 					className: 'bg-warning',
 					buttons: {
 						confirm: {
