@@ -164,27 +164,17 @@ export default {
 		});
 	},
 	created(){
-		/*
-		const fnChange = (event)=>{
-			view.touch();
-			event.target.$collection.$save();
-		}
-		taskCollection.$on('add.sync',(event)=>{
-			event.model.$on('change:done',fnChange);
-			event.model.$on('sync.delete',()=>{
-				event.model.$destroy();
-				view.touch();
-			});
-			event.model.$on('error:delete',(event)=>{
-				this.errorMessage = event.error;
-				event.target.$view.$nativeView.$el.classList.remove('animate__task-delete');	// Remove the animation class to reset the animation
-			});
-			event.model.$on('delete',()=>{
-				event.model.$view.$nativeView.$el.style.setProperty('--item-height',event.model.$view.$nativeView.$el.offsetHeight+'px');	// Set the height of the element to animate
-				event.model.$view.$nativeView.$el.classList.add('animate__task-delete');	// Add the animation class to start the animation
+		//Bind all tasks' done property to view update and save
+		taskListCollection.$on('add.sync',(event)=>{
+			event.model.$on('change:list',(event)=>{
+				event.value.$on('add.sync',(event)=>{
+					event.model.$on('change:done',(event)=>{
+						event.target.$collection?.$save({ownPropertiesOnly: true});
+						view.touch();
+					});
+				});
 			});
 		});
-		*/
 		view.setNativeView(this,'stateVersion');
 
 		//Config model

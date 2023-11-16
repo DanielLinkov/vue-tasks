@@ -112,7 +112,6 @@ const TaskCollectionModel = ModelFactory.createPersistent({
 	persistent: { list: false },
 	events: {
 		'create': function(event){
-			console.log('create',event.target.$key);
 			if(event.target.$key === null)
 				return;	// this is a new model, not loaded from storage
 			event.target.list = new TaskCollection({modelCollectionKeyValue: event.target.$key});
