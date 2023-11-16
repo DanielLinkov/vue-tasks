@@ -56,6 +56,7 @@ const TaskModel = ModelFactory.createPersistent({
 		done: false,
 	},
 	persistent: {
+		'$collection.$key': true,
 	},
 	methods: {
 		transform: function(){
@@ -110,7 +111,14 @@ const TaskCollectionModel = ModelFactory.createPersistent({
 		name: '',
 		list: null,
 	},
-	persistent: { list: false }
+	persistent: { list: false },
+	events: {
+		'created': function(event){
+			event.target.list = new TaskCollection();
+			event.target.list.$fetch().then(()=>{
+			});
+		},
+	},
 });
 
 const TaskListCollection = CollectionFactory.createPersistent({

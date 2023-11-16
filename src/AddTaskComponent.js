@@ -12,7 +12,8 @@ export default {
 			newTask: new NewTaskModel({},{
 				validators: {
 					title: [(val,model,addError)=>{
-						if(this.currentTaskCollection.$one(task => task.title == val))
+						const currentTaskCollectionModel = this.currentTaskCollectionModelGetter();
+						if(currentTaskCollectionModel?.list.$one(task => task.title == val))
 							addError("Task with this title already exists");
 					},
 					async (val,model,addError)=>{
@@ -24,7 +25,8 @@ export default {
 								return;
 							abortController = null;
 							this.validationMessage = 'Checking for title uniqueness...';
-							const result = await this.currentTaskCollection.$storageQuery.search({title: val},(controller)=>{
+							const currentTaskCollectionModel = this.currentTaskCollectionModelGetter();
+							const result = await currentTaskCollectionModel?.list.$storageQuery.search({title: val},(controller)=>{
 								abortController = controller;
 							});
 							if(result.length > 0)
@@ -40,7 +42,7 @@ export default {
 			}),
 		}
 	},
-	inject: ['currentTaskCollection'],
+	inject: ['currentTaskCollectionModelGetter'],
 	methods: {
 		addTask() {
 			this.isTaskValid = false;

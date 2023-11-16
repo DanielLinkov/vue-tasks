@@ -21,14 +21,15 @@
 		<div class="card bg-body-secondary mx-auto" id="task-list">
 			<div class="card-header position-relative">
 				<div class="text-danger position-absolute top-0 start-0 p-2" v-if="errorMessage"><i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}</div>
+				{{ currentTaskCollectionModel?.name }}
 				<h4 class="text-end">
 					Task Lists
 					<button class="btn btn-sm btn-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings"><i class="bi bi-gear-fill text-white"></i></button>
 				</h4>
 			</div>
 
-			<div class="card-body">
-				<add-task-box v-if="currentTaskCollection" @add-task="addTask"></add-task-box>
+			<div class="card-body pb-4">
+				<add-task-box v-if="currentTaskCollectionModel" @add-task="addTask"></add-task-box>
 			</div>
 			<div class="card-header">
 				<div class="row">
@@ -45,8 +46,8 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<task-list v-if="currentTaskCollection" :tasks="tasks" ref="taskList"></task-list>
-				<div v-if="!currentTaskCollection"><em>Select a task list from the dropdown above</em></div>
+				<task-list v-if="currentTaskCollectionModel" :tasks="tasks" ref="taskList"></task-list>
+				<div v-if="!currentTaskCollectionModel"><em>Select a task list from the dropdown above</em></div>
 			</div>
 			<div class="card-footer bg-body">
 				<span>{{ count_tasks_left}} tasks left</span>

@@ -23,7 +23,9 @@ export default {
 	},
 	provide() {
 		return {
-			currentTaskCollection: this.currentTaskCollection
+			currentTaskCollectionModelGetter: ()=>{
+				return this.currentTaskCollectionModel;
+			}
 		}
 	},
 	data(){
@@ -54,30 +56,31 @@ export default {
 			this.stateVersion;
 			return taskListCollection.$items;
 		},
-		currentTaskCollection(){
+		currentTaskCollectionModel(){
 			this.stateVersion;
-			return this.currentTaskListCollectionId !== null ? taskListCollection.$one(taskList => taskList.$key == this.currentTaskListCollectionId).list : null;
+			return this.currentTaskListCollectionId !== null ? taskListCollection.$one(taskList => taskList.$key == this.currentTaskListCollectionId) : null;
 		},
 		tasks(){
 			this.stateVersion;
 			if(this.config.showCompleted){
-				return this.currentTaskCollection ? [...this.currentTaskCollection.$items] : [];
+				return this.currentTaskCollectionModel ? [...this.currentTaskCollectionModel?.list.$items] : [];
 			}
-			return this.currentTaskCollection ? this.currentTaskCollection.$all(task => !task.done) : [];
+			return this.currentTaskCollectionModel ? this.currentTaskCollectionModel?.list.$all(task => !task.done) : [];
 		},
 		count_tasks_left(){
 			this.stateVersion;
-			return this.currentTaskCollection ? this.currentTaskCollection.$all(task => !task.done).length : 0;
+			return this.currentTaskCollectionModel?.list ? this.currentTaskCollectionModel.list.$all(task => !task.done).length : 0;
 		},
 		count_tasks_completed(){
 			this.stateVersion;
-			return this.currentTaskCollection ? this.currentTaskCollection.$all(task => task.done).length : 0;
+			return this.currentTaskCollectionModel?.list ? this.currentTaskCollectionModel.list.$all(task => task.done).length : 0;
 		}
 	},
 	methods: {
 		onTaskListSelected(event){
 			if(event.target.value == 'new'){
 				bootbox.prompt('Enter new task list name',async (result)=>{
+					this.$refs.taskListSelector.value = '';
 					if(result === null)
 						return;
 					const taskList = new TaskCollectionModel({
@@ -90,6 +93,7 @@ export default {
 						view.touch();
 						await nextTick();
 						this.$refs.taskListSelector.value = taskList.$key;
+						this.currentTaskListCollectionId = taskList.$key;
 					}catch(e){
 						taskListCollection.$removeWhere(ckey);
 						this.errorMessage = e[0];
@@ -98,17 +102,19 @@ export default {
 				});
 				return;
 			}
+			this.currentTaskListCollectionId = event.target.value;
+			view.touch()
 		},
 		addTask(data) {
-			this.currentTaskCollection.$add(data);
-			this.currentTaskCollection.$save();
+			this.currentTaskCollectionModel?.list.$add(data);
+			this.currentTaskCollectionModel?.list.$save();
 			view.touch().update();
 		},
 		clearCompleted() {
-			this.currentTaskCollection.$all(task => task.done).forEach(task => task.$delete({destroy:false}));
+			this.currentTaskCollectionModel?.list.$all(task => task.done).forEach(task => task.$delete({destroy:false}));
 		},
 		onReload(){
-			this.currentTaskCollection.$fetch({reset: false})
+			this.currentTaskCollectionModel?.list.$fetch({reset: false})
 				.then((res)=>{
 					view.touch();
 				})
@@ -120,7 +126,7 @@ export default {
 	},
 	mounted(){
 		taskListCollection.$fetch().then(()=>{
-			this.$refs.taskListSelector.disabled = false;
+			this.$refs.taskListSelector.disabled = false;	// Enable the selector after collections are fetched
 			view.touch();
 		});
 	},
