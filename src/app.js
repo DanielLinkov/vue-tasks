@@ -63,7 +63,7 @@ export default {
 		tasks(){
 			this.stateVersion;
 			if(this.config.showCompleted){
-				return this.currentTaskCollectionModel ? [...this.currentTaskCollectionModel?.list.$items] : [];
+				return this.currentTaskCollectionModel ? [...(this.currentTaskCollectionModel?.list?.$items || [])] : [];
 			}
 			return this.currentTaskCollectionModel ? this.currentTaskCollectionModel?.list.$all(task => !task.done) : [];
 		},
@@ -86,8 +86,7 @@ export default {
 						return;
 					}
 					const taskList = new TaskCollectionModel({
-						name: result,
-						list: new TaskCollection(),
+						name: result
 					});
 					const ckey = taskListCollection.$add(taskList);
 					try{

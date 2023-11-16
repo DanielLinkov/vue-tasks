@@ -87,7 +87,7 @@ export default {
 		<div class="position-relative">
 			<div class="input-group" :class="{ 'is-invalid': isTaskValidated && newTask.$hasErrors('title')}">
 				<input type="text" class="form-control" @input="onChange" @keypress.enter="onKeypressEnter" ref="input" v-model="newTask.title" :class="{'is-valid': isTaskValidated && !newTask.$hasErrors('title'), 'is-invalid': isTaskValid === false || isTaskValidated && newTask.$hasErrors('title')}" placeholder="Enter task title">
-				<button class="btn btn-primary" :class="{'btn-danger': !isTaskValid || !isTaskValidated || newTask.$hasErrors('title')}" @click="addTask" :disabled="!isTaskValid || !isTaskValidated || newTask.$hasErrors('title')">Add Task</button>
+				<button class="btn btn-success" :class="{'btn-danger': !isTaskValid || !isTaskValidated || newTask.$hasErrors('title')}" @click="addTask" :disabled="!isTaskValid || !isTaskValidated || newTask.$hasErrors('title')">Add Task</button>
 			</div>
 			<div class="invalid-tooltip">{{ newTask.$error.title }}</div>
 			<div ref="spinner_box" class="d-none">

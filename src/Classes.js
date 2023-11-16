@@ -112,9 +112,14 @@ const TaskCollectionModel = ModelFactory.createPersistent({
 	persistent: { list: false },
 	events: {
 		'create': function(event){
+			console.log('create',event.target.$key);
+			if(event.target.$key === null)
+				return;	// this is a new model, not loaded from storage
 			event.target.list = new TaskCollection({modelCollectionKeyValue: event.target.$key});
-			event.target.list.$fetch().then(()=>{
-			});
+			event.target.list.$fetch().then(()=>{ });
+		},
+		'sync.write': function(event){	//Upon sync write ($save), create a new TaskCollection
+			event.target.list = new TaskCollection({modelCollectionKeyValue: event.target.$key});
 		},
 		'sync.delete': function(event){
 			event.target.list.$delete();
