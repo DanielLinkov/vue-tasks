@@ -81,8 +81,10 @@ export default {
 			if(event.target.value == 'new'){
 				bootbox.prompt('Enter new task list name',async (result)=>{
 					this.$refs.taskListSelector.value = '';
-					if(result === null)
+					if(result === null){
+						this.$refs.taskListSelector.value = this.currentTaskListCollectionId || '';
 						return;
+					}
 					const taskList = new TaskCollectionModel({
 						name: result,
 						list: new TaskCollection(),
@@ -93,16 +95,16 @@ export default {
 						view.touch();
 						await nextTick();
 						this.$refs.taskListSelector.value = taskList.$key;
-						this.currentTaskListCollectionId = taskList.$key;
+						this.currentTaskListCollectionId = +taskList.$key;
 					}catch(e){
 						taskListCollection.$removeWhere(ckey);
 						this.errorMessage = e[0];
-						this.$refs.taskListSelector.value = '';
+						this.$refs.taskListSelector.value = this.currentTaskListCollectionId || '';
 					}
 				});
 				return;
 			}
-			this.currentTaskListCollectionId = event.target.value;
+			this.currentTaskListCollectionId = +event.target.value;
 			view.touch()
 		},
 		addTask(data) {
@@ -112,6 +114,38 @@ export default {
 		},
 		clearCompleted() {
 			this.currentTaskCollectionModel?.list.$all(task => task.done).forEach(task => task.$delete({destroy:false}));
+		},
+		onTaskListDelete(){
+			const fnDelete = async ()=>{
+				this.currentTaskCollectionModel?.$delete();
+				taskListCollection.$removeWhere({ $key: this.currentTaskListCollectionId});
+				this.currentTaskListCollectionId = null;
+				this.$refs.taskListSelector.value = '';
+				view.touch();
+			}
+			if(this.currentTaskCollectionModel?.list.$items.length > 0){
+				bootbox.confirm({
+					title: "Task list is not empty!",
+					message: "Are you sure you want to delete this task list?",
+					className: 'bg-warning',
+					buttons: {
+						confirm: {
+							label: 'Yes',
+							className: 'btn-warning'
+						},
+						cancel: {
+							label: 'No',
+							className: 'btn-secondary'
+						}
+					},
+					callback: (result)=>{
+						if(result)
+							fnDelete();
+					}
+				});
+			}else{
+				fnDelete();
+			}
 		},
 		onReload(){
 			this.currentTaskCollectionModel?.list.$fetch({reset: false})

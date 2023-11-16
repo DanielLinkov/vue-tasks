@@ -55,9 +55,6 @@ const TaskModel = ModelFactory.createPersistent({
 		title: '',
 		done: false,
 	},
-	persistent: {
-		'$collection.$key': true,
-	},
 	methods: {
 		transform: function(){
 			this.title = this.title.replace(/\s+/g,' ');
@@ -98,6 +95,7 @@ const TaskCollection = CollectionFactory.createPersistent({
 	modelClass: TaskModel,
 	storage: storage,
 	storageEntityName: 'tasks',
+	modelCollectionKeyName: 'task_list_id',
 	saveOptions: {
 		timeout: 1000,
 	},	
@@ -113,11 +111,15 @@ const TaskCollectionModel = ModelFactory.createPersistent({
 	},
 	persistent: { list: false },
 	events: {
-		'created': function(event){
-			event.target.list = new TaskCollection();
+		'create': function(event){
+			event.target.list = new TaskCollection({modelCollectionKeyValue: event.target.$key});
 			event.target.list.$fetch().then(()=>{
 			});
 		},
+		'sync.delete': function(event){
+			event.target.list.$delete();
+			event.target.list = null;
+		}
 	},
 });
 

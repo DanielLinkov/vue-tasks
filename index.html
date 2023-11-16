@@ -21,7 +21,6 @@
 		<div class="card bg-body-secondary mx-auto" id="task-list">
 			<div class="card-header position-relative">
 				<div class="text-danger position-absolute top-0 start-0 p-2" v-if="errorMessage"><i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}</div>
-				{{ currentTaskCollectionModel?.name }}
 				<h4 class="text-end">
 					Task Lists
 					<button class="btn btn-sm btn-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings"><i class="bi bi-gear-fill text-white"></i></button>
@@ -33,17 +32,20 @@
 			</div>
 			<div class="card-header">
 				<div class="row">
-					<div class="col-8">
+					<div class="col-9">
 						<select class="form-select" ref="taskListSelector" disabled @change="onTaskListSelected">
-							<option value="" selected>Select task list</option>
+							<option value="" selected :disabled="currentTaskListCollectionId">Select task list</option>
 							<option v-for="taskCollection in taskListCollection" :value="taskCollection.$key">{{ taskCollection.name }}</option>
 							<option value="new">[New Task List]</option>
 						</select>
 					</div>
-					<div class="col-4">
-						<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
+					<div class="col-3 d-grid">
+						<button class="btn btn-sm btn-warning" :disabled="!currentTaskCollectionModel" @click="onTaskListDelete"><i class="bi bi-trash-fill"></i> Delete</button>
 					</div>
 				</div>
+			</div>
+			<div class="card-header">
+				<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
 			</div>
 			<div class="card-body">
 				<task-list v-if="currentTaskCollectionModel" :tasks="tasks" ref="taskList"></task-list>
