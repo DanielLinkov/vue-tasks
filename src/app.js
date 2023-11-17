@@ -78,6 +78,8 @@ export default {
 	},
 	methods: {
 		onTaskListSelected(event){
+			this.$refs.addTaskComponent.newTask.title = '';
+			this.$refs.addTaskComponent.isTaskValidated = false;
 			if(event.target.value == 'new'){
 				bootbox.prompt('Enter new task list name',async (result)=>{
 					this.$refs.taskListSelector.value = '';
@@ -124,16 +126,16 @@ export default {
 			}
 			if(this.currentTaskCollectionModel?.list.$items.length > 0){
 				bootbox.confirm({
-					title: "<div class='text-warning'><i class='bi bi-exclamation-triangle'></i> Task list is not empty!</div>",
+					title: /* html */`<div class='text-warning-emphasis'><i class='bi bi-exclamation-triangle'></i> Task list is not empty!</div>`,
 					message: "Are you sure you want to DELETE this task list and ALL TASKS inside it?",
-					className: 'bg-warning',
+					className: 'bg-warning-emphasis',
 					buttons: {
 						confirm: {
 							label: 'Yes',
 							className: 'btn-warning'
 						},
 						cancel: {
-							label: 'No',
+							label: 'Cancel',
 							className: 'btn-secondary'
 						}
 					},

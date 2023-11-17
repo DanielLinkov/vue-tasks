@@ -13,8 +13,10 @@ export default {
 				validators: {
 					title: [(val,model,addError)=>{
 						const currentTaskCollectionModel = this.currentTaskCollectionModelGetter();
+						val = val.trim();
 						if(currentTaskCollectionModel?.list.$one(task => task.title == val))
 							addError("Task with this title already exists");
+						return val;
 					},
 					async (val,model,addError)=>{
 						try{
@@ -26,8 +28,10 @@ export default {
 							abortController = null;
 							this.validationMessage = 'Checking for title uniqueness...';
 							const currentTaskCollectionModel = this.currentTaskCollectionModelGetter();
-							const result = await currentTaskCollectionModel?.list.$storageQuery.search({title: val},(controller)=>{
-								abortController = controller;
+							const result = await currentTaskCollectionModel?.list.$storageQuery.search({title: val},{
+								setAbortControllerCallback: (controller)=>{
+									abortController = controller;
+								},
 							});
 							if(result.length > 0)
 								addError("Task with this title already exists in storage");
@@ -52,7 +56,11 @@ export default {
 			this.newTask.title = '';
 			this.$forceUpdate();
 		},
-		async onChange(){
+		onChange(){
+			this.newTask.$call('transform');	//Trim
+			this.$forceUpdate();	// force input update
+		},
+		async onInput(){
 			this.isTaskValid = false;
 			this.isTaskValidated = false;
 			clearTimeout(this.timerIdValidate);
@@ -75,6 +83,7 @@ export default {
 		async onKeypressEnter(){
 			if(!this.isTaskValid || !this.isTaskValidated)
 				return;
+			this.onChange();
 			if(!this.newTask.$hasErrors('title')){
 				this.addTask();
 			}
@@ -86,7 +95,7 @@ export default {
 	template: /*html*/`
 		<div class="position-relative">
 			<div class="input-group" :class="{ 'is-invalid': isTaskValidated && newTask.$hasErrors('title')}">
-				<input type="text" class="form-control" @input="onChange" @keypress.enter="onKeypressEnter" ref="input" v-model="newTask.title" :class="{'is-valid': isTaskValidated && !newTask.$hasErrors('title'), 'is-invalid': isTaskValid === false || isTaskValidated && newTask.$hasErrors('title')}" placeholder="Enter task title">
+				<input type="text" class="form-control" @change="onChange" @input="onInput" @keypress.enter="onKeypressEnter" ref="input" v-model="newTask.title" :class="{'is-valid': isTaskValidated && !newTask.$hasErrors('title'), 'is-invalid': isTaskValid === false || isTaskValidated && newTask.$hasErrors('title')}" placeholder="Enter task title">
 				<button class="btn btn-success" :class="{'btn-danger': !isTaskValid || !isTaskValidated || newTask.$hasErrors('title')}" @click="addTask" :disabled="!isTaskValid || !isTaskValidated || newTask.$hasErrors('title')">Add Task</button>
 			</div>
 			<div class="invalid-tooltip">{{ newTask.$error.title }}</div>

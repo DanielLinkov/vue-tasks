@@ -37,12 +37,12 @@
 						</select>
 					</div>
 					<div class="col-3 d-grid">
-						<button class="btn btn-sm btn-outline-secondary" :disabled="!currentTaskCollectionModel" @click="onTaskListDelete"><i class="bi bi-trash-fill"></i> Delete</button>
+						<button class="btn btn-sm btn-outline-warning" :disabled="!currentTaskCollectionModel" @click="onTaskListDelete"><i class="bi bi-trash-fill"></i> Delete</button>
 					</div>
 				</div>
 			</div>
 			<div class="card-body pb-4">
-				<add-task-box v-if="currentTaskCollectionModel" @add-task="addTask"></add-task-box>
+				<add-task-box v-show="currentTaskCollectionModel" @add-task="addTask" ref="addTaskComponent"></add-task-box>
 			</div>
 			<div class="card-header">
 				<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
