@@ -11,9 +11,13 @@ export default {
 		return {
 			editing: false,
 			draggingItem: null,
+			viewAdapter: new ViewAdapterVue(this),
 		}
 	},
 	watch: {
+		task(val,oldValue){
+			oldValue && oldValue.$attachToView(null);
+		},
 		editing(val){
 			if(val){
 				this.$emit('update:editing',this.task.$ckey);
@@ -44,14 +48,18 @@ export default {
 			this.task.$revert();
 			this.editing = false;
 		},
-		onDelete(){
-			this.task.$delete({destroy:false});
+		onNewTaskModel(){
+			this.task.$attachToView(this.viewAdapter);
+		},
+		onDoneUpdated(){
+			this.task.$updateView();
 		}
 	},
 	mounted(){
-		this.task.$attachToView(new ViewAdapterVue(this)).$watch('done',(val,propName,model)=>{
-			model.$updateView();
-		});
+		this.onNewTaskModel();
+	},
+	updated(){
+		this.onNewTaskModel();
 	},
 	created(){
 		this.elId = _.uniqueId('_vue_checkbox_');
@@ -80,7 +88,7 @@ export default {
 				<button class="btn btn-secondary" title="Edit task" v-if="!editing" @click="this.editing = true"><i class="bi bi-pencil"></i></button>
 				<button class="btn btn-link" v-if="editing" @click="onCancel">cancel</button>
 				<button
-					@click="onDelete"
+					@click="$emit('delete')"
 					type="button" class="btn btn-danger btn-sm"
 				>Delete</button>
 			</div>
