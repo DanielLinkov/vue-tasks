@@ -3,7 +3,6 @@ import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
 import { ConfigModel, TaskCollection, TaskModel, TaskCollectionModel, TaskListCollection } from "./Classes.js";
 import { ViewAdapterVue } from "../lib/View.js";
-import { nextTick } from "vue";
 
 const configModel = new ConfigModel({},{
 });
@@ -25,7 +24,8 @@ export default {
 		return {
 			currentTaskCollectionModelGetter: ()=>{
 				return this.currentTaskCollectionModel;
-			}
+			},
+			notification: ()=>this.notification,
 		}
 	},
 	data(){
@@ -34,6 +34,11 @@ export default {
 			config: configModel.$propState,
 			stateVersion: 0,
 			errorMessage: null,
+			notification: null,
+			themes: [
+				{ label: 'Light', value: 'light' },
+				{ label: 'Dark', value: 'dark' },
+			]
 		}
 	},
 	watch: {
@@ -77,7 +82,7 @@ export default {
 		}
 	},
 	methods: {
-		onTaskListSelected(event){
+		async onTaskListSelected(event){
 			this.$refs.addTaskComponent.newTask.title = '';
 			this.$refs.addTaskComponent.isTaskValidated = false;
 			if(event.target.value == 'new'){
@@ -94,7 +99,7 @@ export default {
 					try{
 						await taskListCollection.$save();
 						view.touch();
-						await nextTick();
+						await Vue.nextTick();
 						this.$refs.taskListSelector.value = taskList.$key;
 						this.currentTaskListCollectionId = +taskList.$key;
 					}catch(e){
@@ -106,7 +111,9 @@ export default {
 				return;
 			}
 			this.currentTaskListCollectionId = +event.target.value;
-			view.touch()
+			view.touch();
+			await Vue.nextTick();
+			this.$refs.addTaskComponent.$refs.input.focus();
 		},
 		addTask(data) {
 			this.currentTaskCollectionModel?.list.$add(data);
@@ -164,6 +171,8 @@ export default {
 			this.$refs.taskListSelector.disabled = false;	// Enable the selector after collections are fetched
 			view.touch();
 		});
+		const { notification } = naive.createDiscreteApi(['notification']);
+		this.notification = notification;
 	},
 	created(){
 		//Bind all tasks' done property to view update and save

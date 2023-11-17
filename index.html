@@ -7,7 +7,6 @@
 	<script type="importmap">
 		{
 			"imports": {
-				"vue": "./node_modules/vue/dist/vue.esm-browser.js"
 			}
 		}
 	</script>
@@ -54,7 +53,7 @@
 			<div class="card-footer bg-body">
 				<span>{{ count_tasks_left}} tasks left</span>
 				<button class="btn btn-sm btn-secondary float-end" :disabled="!count_tasks_completed || !config.showCompleted" @click="clearCompleted">Clear Completed</button>
-				<button @click="onReload" class="btn btn-sm btn-secondary float-end">Reload</button>
+				<n-button @click="onReload" strong secondary round type="info" class="float-end">Reload</n-button>
 			</div>
 		</div>
 		<div class="offcanvas offcanvas-end" id="offcanvas-settings">
@@ -65,10 +64,12 @@
 			<div class="offcanvas-body">
 				<div class="mb-3">
 					<label for="theme-select" class="form-label">Theme</label>
-					<select class="form-select" id="theme-select" v-model="config.theme">
+					<!-- <select class="form-select" id="theme-select" v-model="config.theme">
 						<option value="light">Light</option>
 						<option value="dark">Dark</option>
-					</select>
+					</select> -->
+					<n-select v-model:value="config.theme" :options="themes">
+					</n-select>
 				</div>
 			</div>
 		</div>
@@ -77,6 +78,8 @@
 	<script src="./node_modules/jquery/dist/jquery.slim.min.js"></script>
 	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="./node_modules/bootbox/dist/bootbox.min.js"></script>
+	<script src="./node_modules/vue/dist/vue.global.js"></script>
+	<script src="./node_modules/naive-ui/dist/index.js"></script>
 	<script type="module" src="./src/index.js"></script>
 
 </body>
