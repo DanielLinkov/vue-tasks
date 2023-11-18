@@ -36,23 +36,12 @@ export default {
 			currentTaskListCollectionId: null,
 			config: configModel.$propState,
 			stateVersion: 0,
-			errorMessage: null,
 		}
 	},
 	watch: {
 		'config.theme': (val)=>{
 			document.body.setAttribute('data-bs-theme',val);
 		},
-		errorMessage(val){
-			if(val){
-				if(errorMessageTimerId)
-					clearTimeout(errorMessageTimerId);
-				errorMessageTimerId = setTimeout(()=>{
-					this.errorMessage = null;
-					errorMessageTimerId = null;
-				},5000);
-			}
-		}
 	},
 	computed:{
 		taskListCollection(){
