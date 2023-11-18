@@ -3,6 +3,7 @@ import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
 import { ConfigModel, TaskCollection, TaskModel, TaskCollectionModel, TaskListCollection } from "./Classes.js";
 import { ViewAdapterVue } from "../lib/View.js";
+import Toaster from "./Toaster.js";
 
 const configModel = new ConfigModel({},{
 });
@@ -13,6 +14,8 @@ const taskListCollection = new TaskListCollection({},{
 const view = new ViewAdapterVue();
 
 let errorMessageTimerId	= null;
+
+const toaster = new Toaster({position: ['bottom-0','start-0']});
 
 export default {
 	components: {
@@ -25,6 +28,7 @@ export default {
 			currentTaskCollectionModelGetter: ()=>{
 				return this.currentTaskCollectionModel;
 			},
+			toaster,
 		}
 	},
 	data(){
@@ -46,7 +50,7 @@ export default {
 				errorMessageTimerId = setTimeout(()=>{
 					this.errorMessage = null;
 					errorMessageTimerId = null;
-				},3000);
+				},5000);
 			}
 		}
 	},
@@ -98,9 +102,10 @@ export default {
 						this.currentTaskListCollectionId = +taskList.$key;
 					}catch(e){
 						taskListCollection.$removeWhere(ckey);
-						this.errorMessage = e[0];
+						toaster.error(Array.isArray(e) ? e[0] : e);
 						this.$refs.taskListSelector.value = this.currentTaskListCollectionId || '';
 					}
+					toaster.success(`Task list <strong>${result}</strong> created`);
 				});
 				return;
 			}
@@ -113,6 +118,7 @@ export default {
 			this.currentTaskCollectionModel?.list.$add(data);
 			this.currentTaskCollectionModel?.list.$save();
 			view.touch().update();
+			toaster.success(`Task <strong>${data.title}</strong> added`);
 		},
 		clearCompleted() {
 			this.currentTaskCollectionModel?.list.$all(task => task.done).forEach(task => task.$delete({destroy:false}));
@@ -124,6 +130,7 @@ export default {
 				this.currentTaskListCollectionId = null;
 				this.$refs.taskListSelector.value = '';
 				view.touch();
+				toaster.success(`Task list <strong>${this.currentTaskCollectionModel?.name}</strong> deleted`);
 			}
 			if(this.currentTaskCollectionModel?.list.$items.length > 0){
 				bootbox.confirm({
@@ -185,7 +192,7 @@ export default {
 			this.config = configModel.$propState;
 		});
 		configModel.$on('error',(event)=>{
-			this.errorMessage = event.error;
+			toaster.error(event.error);
 			configModel.$revert();
 			this.config = configModel.$propState;
 		});

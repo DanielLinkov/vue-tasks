@@ -49,3 +49,11 @@ label{
 	animation: animate_task-delete .2s ease-in-out;
 	animation-fill-mode: forwards;
 }
+
+.toast{
+	backdrop-filter: blur(2px);
+	--bs-bg-opacity: 0.7;
+}
+.toast-header i.bi::before{
+	transform: scale(1.5);
+}

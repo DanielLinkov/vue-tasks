@@ -5,7 +5,7 @@ export default {
 	components: {
 		'labeled-checkbox': CheckboxComponent,
 	},
-	inject: [ 'editedTaskId' ],
+	inject: [ 'editedTaskId', 'toaster' ],
 	props: [ 'task' ],
 	data(){
 		return {
@@ -37,8 +37,10 @@ export default {
 		async onUpdateEditing(){
 			await this.task.$validate('title');
 			if(!this.task.$hasErrors('title')){
+				let oldTitle = this.task.$propPersistentState.title;
 				this.task.$call('transform');
 				this.task.$collection.$save();
+				this.toaster.success(`Task <strong>${oldTitle}</strong> renamed to <strong>${this.task.title}</strong>`);
 			}else{
 				this.task.$revert();
 			}

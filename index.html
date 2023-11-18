@@ -19,8 +19,8 @@
 	<div id="app">
 		<h1 class="text-center mt-4 mb-2">Tasks Vue</h1>	
 		<div class="card bg-body-secondary mx-auto" id="task-list">
+			<div class="alert alert-danger" v-if="errorMessage"><i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}</div>
 			<div class="card-header position-relative">
-				<div class="text-danger position-absolute top-0 start-0 p-2" v-if="errorMessage"><i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}</div>
 				<h4 class="text-end">
 					Task Lists
 					<button class="btn btn-sm btn-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings"><i class="bi bi-gear-fill text-white"></i></button>
