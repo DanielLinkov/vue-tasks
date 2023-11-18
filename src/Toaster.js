@@ -36,7 +36,7 @@ class Toaster{
 		const toastElement = document.createElement('div');
 		toastElement.classList.add('toast',`text-bg-${options.type}`);
 
-		if(options.title?.length > 0){
+		if(options.title !== null){
 			const titleElement = document.createElement('div');
 			titleElement.classList.add('toast-header');
 			titleElement.innerHTML = `
@@ -50,16 +50,16 @@ class Toaster{
 			toastElement.appendChild(titleElement);
 		}
 
-		if(options.message?.length > 0){
+		if(options.message !== null){
 			const messageElement = document.createElement('div');
 			messageElement.classList.add('toast-body');
 			messageElement.innerHTML = options.message;
-			if(options.closeBtn && options.title?.length == 0){
+			if(options.closeBtn && options.title === null){
 				const flexElement = document.createElement('div');
 				flexElement.classList.add('d-flex');
 				flexElement.appendChild(messageElement);
 				flexElement.innerHTML += `
-					<button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+					<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
 				`;
 				toastElement.appendChild(flexElement);
 			}else
@@ -75,28 +75,52 @@ class Toaster{
 		});
 		toast.show();
 	}
-	success(options){
+	success(options,title=null){
 		if(!(typeof options == 'object' && options !== null && Object.getPrototypeOf(options) === Object.prototype))
 			options = {message: String(options)};
 
+		options.title = (title || options.title) ? (options.icon ?? '<i class="bi bi-check text-success"></i>')+` ${title || options.title}` : null;
 		options = Object.assign({
-			type: 'success',
-			title: '<i class="bi bi-check text-success"></i> Success',
 			message: '',
 		},options);
 
+		options.type = 'success';
 		this.create(options);
 	}
-	error(options){
+	info(options,title=null){
 		if(!(typeof options == 'object' && options !== null && Object.getPrototypeOf(options) === Object.prototype))
 			options = {message: String(options)};
 
+		options.title = (title || options.title) ? (options.icon ?? '<i class="bi bi-info-circle text-info"></i>')+` ${title || options.title}` : null;
 		options = Object.assign({
-			type: 'danger',
-			title: '<i class="bi bi-exclamation-triangle-fill text-danger"></i> Error',
 			message: '',
 		},options);
 
+		options.type = 'info';
+		this.create(options);
+	}
+	warning(options,title=null){
+		if(!(typeof options == 'object' && options !== null && Object.getPrototypeOf(options) === Object.prototype))
+			options = {message: String(options)};
+
+		options.title = (title || options.title) ? (options.icon ?? '<i class="bi bi-exclamation-triangle-fill text-warning"></i>')+` ${title || options.title}` : null;
+		options = Object.assign({
+			message: '',
+		},options);
+
+		options.type = 'warning';
+		this.create(options);
+	}
+	danger(options,title=null){
+		if(!(typeof options == 'object' && options !== null && Object.getPrototypeOf(options) === Object.prototype))
+			options = {message: String(options)};
+
+		options.title = (title || options.title) ? (options.icon ?? '<i class="bi bi-exclamation-triangle-fill text-danger"></i>')+` ${title || options.title}` : null;
+		options = Object.assign({
+			message: '',
+		},options);
+
+		options.type = 'danger';
 		this.create(options);
 	}
 }

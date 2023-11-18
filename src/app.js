@@ -125,12 +125,13 @@ export default {
 		},
 		onTaskListDelete(){
 			const fnDelete = async ()=>{
+				const name = this.currentTaskCollectionModel?.name;
 				this.currentTaskCollectionModel?.$delete();
 				taskListCollection.$removeWhere({ $key: this.currentTaskListCollectionId});
 				this.currentTaskListCollectionId = null;
 				this.$refs.taskListSelector.value = '';
 				view.touch();
-				toaster.success(`Task list <strong>${this.currentTaskCollectionModel?.name}</strong> deleted`);
+				toaster.warning(`Task list <strong>${name}</strong> deleted`);
 			}
 			if(this.currentTaskCollectionModel?.list.$items.length > 0){
 				bootbox.confirm({
@@ -160,9 +161,10 @@ export default {
 			this.currentTaskCollectionModel?.list.$fetch({reset: false})
 				.then((res)=>{
 					view.touch();
+					toaster.info(`Task list <strong>${this.currentTaskCollectionModel?.name}</strong> reloaded`);
 				})
 				.catch(async result=>{
-					console.warn('fetch error:',result);
+					toaster.danger(result.error.message,result.error.name);
 				});
 
 		}
@@ -192,7 +194,7 @@ export default {
 			this.config = configModel.$propState;
 		});
 		configModel.$on('error',(event)=>{
-			toaster.error(event.error);
+			toaster.danger(event.error.message,event.error.name);
 			configModel.$revert();
 			this.config = configModel.$propState;
 		});
