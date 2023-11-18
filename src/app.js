@@ -25,7 +25,6 @@ export default {
 			currentTaskCollectionModelGetter: ()=>{
 				return this.currentTaskCollectionModel;
 			},
-			notification: ()=>this.notification,
 		}
 	},
 	data(){
@@ -34,11 +33,6 @@ export default {
 			config: configModel.$propState,
 			stateVersion: 0,
 			errorMessage: null,
-			notification: null,
-			themes: [
-				{ label: 'Light', value: 'light' },
-				{ label: 'Dark', value: 'dark' },
-			]
 		}
 	},
 	watch: {
@@ -171,8 +165,6 @@ export default {
 			this.$refs.taskListSelector.disabled = false;	// Enable the selector after collections are fetched
 			view.touch();
 		});
-		const { notification } = naive.createDiscreteApi(['notification']);
-		this.notification = notification;
 	},
 	created(){
 		//Bind all tasks' done property to view update and save

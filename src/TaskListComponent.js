@@ -14,7 +14,6 @@ export default {
 			editedTaskId: Vue.computed(() => this.editedTaskId),
 		}
 	},
-	inject: [ 'notification'],
 	props:[ 'tasks' ],
 	watch: {
 		tasks(list,oldList){
@@ -52,7 +51,6 @@ export default {
 			event.target.$view.$nativeView.$el.classList.remove('animate__task-delete');
 		},
 		_onTaskSyncDelete(event){
-			this.notification().success({title: 'Task deleted', duration: 3000, content: `Task "${event.target.title}" has been deleted`});
 			event.target.$destroy();
 		},
 		_onTaskDelete(event){

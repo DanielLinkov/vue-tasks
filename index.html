@@ -10,7 +10,8 @@
 			}
 		}
 	</script>
-	<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="assets/simplex/bootstrap.min.css">
 	<link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
@@ -52,8 +53,10 @@
 			</div>
 			<div class="card-footer bg-body">
 				<span>{{ count_tasks_left}} tasks left</span>
-				<button class="btn btn-sm btn-secondary float-end" :disabled="!count_tasks_completed || !config.showCompleted" @click="clearCompleted">Clear Completed</button>
-				<n-button @click="onReload" strong secondary round type="info" class="float-end">Reload</n-button>
+				<div class="btn-group float-end">
+					<button @click="onReload" class="btn btn-sm btn-secondary">Reload</button>
+					<button class="btn btn-sm btn-secondary" :disabled="!count_tasks_completed || !config.showCompleted" @click="clearCompleted">Clear Completed</button>
+				</div>
 			</div>
 		</div>
 		<div class="offcanvas offcanvas-end" id="offcanvas-settings">
@@ -64,12 +67,10 @@
 			<div class="offcanvas-body">
 				<div class="mb-3">
 					<label for="theme-select" class="form-label">Theme</label>
-					<!-- <select class="form-select" id="theme-select" v-model="config.theme">
+					<select class="form-select" id="theme-select" v-model="config.theme">
 						<option value="light">Light</option>
 						<option value="dark">Dark</option>
-					</select> -->
-					<n-select v-model:value="config.theme" :options="themes">
-					</n-select>
+					</select>
 				</div>
 			</div>
 		</div>
@@ -79,7 +80,6 @@
 	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="./node_modules/bootbox/dist/bootbox.min.js"></script>
 	<script src="./node_modules/vue/dist/vue.global.js"></script>
-	<script src="./node_modules/naive-ui/dist/index.js"></script>
 	<script type="module" src="./src/index.js"></script>
 
 </body>
