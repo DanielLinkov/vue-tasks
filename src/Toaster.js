@@ -74,6 +74,8 @@ class Toaster{
 			toastElement.remove();
 		});
 		toast.show();
+		toastElement.style.setProperty('--toast-height',toastElement.offsetHeight + 'px');
+		// toastElement.classList.remove('position-absolute');
 	}
 	success(options,title=null){
 		if(!(typeof options == 'object' && options !== null && Object.getPrototypeOf(options) === Object.prototype))

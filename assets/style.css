@@ -50,9 +50,21 @@ label{
 	animation-fill-mode: forwards;
 }
 
+@keyframes expand {
+	from {
+		margin-top:  calc(0px - var(--toast-height) - var(--bs-toast-spacing));
+	}
+	to{
+		margin-top: 0;
+	}
+}
 .toast{
 	backdrop-filter: blur(2px);
 	--bs-bg-opacity: 0.6;
+}
+.toast.show{
+	animation: expand 0.2s ease-in-out;
+	animation-fill-mode: forwards;
 }
 .toast-header i.bi.bi-check::before{
 	transform: scale(2);

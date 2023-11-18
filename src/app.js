@@ -177,9 +177,14 @@ export default {
 	},
 	created(){
 		//Bind all tasks' done property to view update and save
-		taskListCollection.$on('add',(event)=>{
+		taskListCollection.$on('add.sync',(event)=>{
 			event.model.$on('change:list',(event)=>{
-				event.value.$on('add',(event)=>{
+				event.value.$on('add.sync',(event)=>{
+					event.model.$on('error',(event)=>{
+						toaster.danger(event.error.message,event.error.name);
+						event.target.$revert();
+						event.target.view?.touch();
+					});
 					event.model.$on('change:done',(event)=>{
 						event.target.$collection?.$save({ownPropertiesOnly: true});
 						view.touch();
