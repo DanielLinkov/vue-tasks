@@ -15,7 +15,7 @@ const view = new ViewAdapterVue();
 
 let errorMessageTimerId	= null;
 
-const toaster = new Toaster({position: ['bottom-0','start-0']});
+const toaster = new Toaster({position: ['bottom-0','start-0'],delay: 3000});
 
 export default {
 	components: {
@@ -177,9 +177,9 @@ export default {
 	},
 	created(){
 		//Bind all tasks' done property to view update and save
-		taskListCollection.$on('add.sync',(event)=>{
+		taskListCollection.$on('add',(event)=>{
 			event.model.$on('change:list',(event)=>{
-				event.value.$on('add.sync',(event)=>{
+				event.value.$on('add',(event)=>{
 					event.model.$on('change:done',(event)=>{
 						event.target.$collection?.$save({ownPropertiesOnly: true});
 						view.touch();

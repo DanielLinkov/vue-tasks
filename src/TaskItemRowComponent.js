@@ -40,7 +40,7 @@ export default {
 				let oldTitle = this.task.$propPersistentState.title;
 				this.task.$call('transform');
 				this.task.$collection.$save();
-				this.toaster.success(`Task <strong>${oldTitle}</strong> renamed to <strong>${this.task.title}</strong>`);
+				this.toaster.info(`Task <strong>${oldTitle}</strong> renamed to <strong>${this.task.title}</strong>`);
 			}else{
 				this.task.$revert();
 			}

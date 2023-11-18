@@ -53,7 +53,7 @@ export default {
 		},
 		_onTaskSyncDelete(event){
 			event.target.$destroy();
-			this.toaster.warning(`Task <strong>${event.target.title}</strong> deleted`);
+			this.toaster.info(`Task <strong>${event.target.title}</strong> deleted`);
 		},
 		_onTaskDelete(event){
 			event.target.$view.$nativeView.$el.style.setProperty('--item-height',event.target.$view.$nativeView.$el.offsetHeight+'px');	// Set the height of the element to animate
