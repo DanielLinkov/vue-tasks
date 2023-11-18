@@ -52,7 +52,7 @@ label{
 
 .toast{
 	backdrop-filter: blur(2px);
-	--bs-bg-opacity: 0.7;
+	--bs-bg-opacity: 0.6;
 }
 .toast-header i.bi.bi-check::before{
 	transform: scale(2);
