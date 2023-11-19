@@ -47,7 +47,7 @@
 				<labeled-checkbox v-model="config.showCompleted" class="float-end">Show Completed</labeled-checkbox>
 			</div>
 			<div class="card-body">
-				<task-list v-if="currentTaskCollectionModel" :tasks="tasks" ref="taskList"></task-list>
+				<task-list v-if="currentTaskCollectionModel" :tasks="tasks" @task-deleted="onTaskDeleted" ref="taskList"></task-list>
 				<div v-if="!currentTaskCollectionModel"><em>Select a task list from the dropdown above</em></div>
 			</div>
 			<div class="card-footer bg-body">

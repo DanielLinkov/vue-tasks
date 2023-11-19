@@ -50,32 +50,47 @@ class Toaster{
 			toastElement.appendChild(titleElement);
 		}
 
-		if(options.message !== null){
-			const messageElement = document.createElement('div');
-			messageElement.classList.add('toast-body');
-			messageElement.innerHTML = options.message;
-			if(options.closeBtn && options.title === null){
-				const flexElement = document.createElement('div');
-				flexElement.classList.add('d-flex');
-				flexElement.appendChild(messageElement);
-				flexElement.innerHTML += `
-					<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-				`;
-				toastElement.appendChild(flexElement);
-			}else
-				toastElement.appendChild(messageElement);
+		const messageElement = document.createElement('div');
+		messageElement.classList.add('toast-body');
+		messageElement.innerHTML = options.message;
+		const flexElement = document.createElement('div');
+		flexElement.classList.add('d-flex','align-items-center');
+		flexElement.appendChild(messageElement);
+		if(options.onUndoCallback){
+			const undoElement = document.createElement('button');
+			undoElement.classList.add('btn','btn-link','btn-sm','text-decoration-none','fw-bold','ms-auto');
+			undoElement.innerHTML = 'Undo';
+			undoElement.addEventListener('click',()=>{
+				toastElement.removeEventListener('hidden.bs.toast',fnToastHidden);
+				toastElement.remove();
+				options.onUndoCallback();
+			});
+			flexElement.appendChild(undoElement);
+		}
+		if(options.closeBtn && options.title === null){
+			const btnCloseElement = document.createElement('button');
+			btnCloseElement.type = 'button';
+			btnCloseElement.classList.add('btn-close','me-2');
+			if(!options.onUndoCallback)
+				btnCloseElement.classList.add('m-auto');
+			btnCloseElement.setAttribute('data-bs-dismiss','toast');
+			flexElement.appendChild(btnCloseElement);
+		}
+		toastElement.appendChild(flexElement);
+
+		const fnToastHidden = ()=>{
+			options.onHiddenCallback && options.onHiddenCallback();
+			// toastElement.remove();
 		}
 		this.#containerElement.appendChild(toastElement);
+
 		const toast = new bootstrap.Toast(toastElement,{
 			autohide: options.autohide,
 			delay: options.delay,
 		});
-		toastElement.addEventListener('hidden.bs.toast',()=>{
-			toastElement.remove();
-		});
+		toastElement.addEventListener('hidden.bs.toast',fnToastHidden);
 		toast.show();
 		toastElement.style.setProperty('--toast-height',toastElement.offsetHeight + 'px');
-		// toastElement.classList.remove('position-absolute');
 	}
 	success(options,title=null){
 		if(!(typeof options == 'object' && options !== null && Object.getPrototypeOf(options) === Object.prototype))

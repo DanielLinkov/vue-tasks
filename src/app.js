@@ -69,6 +69,9 @@ export default {
 		}
 	},
 	methods: {
+		onTaskDeleted(){
+			view.touch();
+		},
 		async onTaskListSelected(event){
 			this.$refs.addTaskComponent.newTask.title = '';
 			this.$refs.addTaskComponent.isTaskValidated = false;
@@ -115,13 +118,16 @@ export default {
 		onTaskListDelete(){
 			const fnDelete = async ()=>{
 				const name = this.currentTaskCollectionModel?.name;
+				/* Delete task list model and collection */
 				this.currentTaskCollectionModel?.$delete();
+				/* Remove task list from task list collection */
 				taskListCollection.$removeWhere({ $key: this.currentTaskListCollectionId});
 				this.currentTaskListCollectionId = null;
 				this.$refs.taskListSelector.value = '';
 				view.touch();
 				toaster.warning(`Task list <strong>${name}</strong> deleted`);
 			}
+			/* Check if task list is empty */
 			if(this.currentTaskCollectionModel?.list.$items.length > 0){
 				bootbox.confirm({
 					title: /* html */`<div class='text-warning-emphasis'><i class='bi bi-exclamation-triangle'></i> Task list is not empty!</div>`,

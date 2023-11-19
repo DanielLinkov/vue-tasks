@@ -18,6 +18,7 @@ export default {
 	inject: ['toaster'],
 	watch: {
 		tasks(list,oldList){
+			/* Remove event listeners from old list */
 			oldList.forEach(task => {
 				task.$off('delete',this._onTaskDelete);
 				task.$off('sync',this._onTaskSyncDelete);
@@ -40,7 +41,8 @@ export default {
 		onDelete(task){
 			task.$delete({destroy:false});
 		},
-		onNewTaskList(){
+		/* Add event listeners to new list */
+		_onNewTaskList(){
 			this.tasks.forEach(task => {
 				task.$on('delete',this._onTaskDelete);
 				task.$on('sync.delete',this._onTaskSyncDelete,this);
@@ -52,8 +54,16 @@ export default {
 			event.target.$view.$nativeView.$el.classList.remove('animate__task-delete');
 		},
 		_onTaskSyncDelete(event){
-			event.target.$destroy();
-			this.toaster.info(`Task <strong>${event.target.title}</strong> deleted`);
+			this.toaster.info({message: `Task <strong>${event.target.title}</strong> deleted`,
+				onUndoCallback: ()=>{
+					event.target.$collection.$save();
+					event.target.$view.$nativeView.$el.classList.remove('animate__task-delete');
+				},
+				onHiddenCallback: ()=>{
+					event.target.$destroy();
+					this.$emit('task-deleted');
+				}
+			});
 		},
 		_onTaskDelete(event){
 			event.target.$view.$nativeView.$el.style.setProperty('--item-height',event.target.$view.$nativeView.$el.offsetHeight+'px');	// Set the height of the element to animate
@@ -61,10 +71,12 @@ export default {
 		}
 	},
 	mounted(){
-		this.onNewTaskList();
+		/* Add event listeners to new list */
+		this._onNewTaskList();
 	},
 	updated(){
-		this.onNewTaskList();
+		/* Add event listeners to new list */
+		this._onNewTaskList();
 	},
 	template: /* html */`
 		<div class="list-group">
