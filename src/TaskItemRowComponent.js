@@ -93,7 +93,7 @@ export default {
 				<button
 					@click="$emit('delete')"
 					type="button" class="btn btn-danger btn-sm"
-				>Delete</button>
+				><i class="bi bi-trash"></i></button>
 			</div>
 		</div>
 	`,
