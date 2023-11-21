@@ -1,3 +1,6 @@
 [submodule "SpineJS"]
 	path = spinejs
 	url = https://github.com/DanielLinkov/SpineJS.git
+[submodule "spinejs"]
+	path = spinejs
+	url = https://github.com/DanielLinkov/SpineJS.git
