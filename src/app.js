@@ -65,6 +65,14 @@ export default {
 			}
 			return this.currentTaskCollectionModel ? this.currentTaskCollectionModel?.list.$all(task => !task.done) : [];
 		},
+		task_lists(){
+			this.stateVersion;
+			const options = taskListCollection.$items.map(task=>[task.$key,task.name]);
+			options.push([()=>{
+				this.onTaskListSelected('new');
+			},'<em>[New task list]</em>']);
+			return options;
+		},
 		count_tasks_left(){
 			this.stateVersion;
 			return this.currentTaskCollectionModel?.list ? this.currentTaskCollectionModel.list.$all(task => !task.done).length : 0;
@@ -78,37 +86,35 @@ export default {
 		onTaskDeleted(){
 			view.touch();
 		},
-		async onTaskListSelected(event){
+		async onTaskListSelected(value){
 			this.$refs.addTaskComponent.newTask.title = '';
 			this.$refs.addTaskComponent.isTaskValidated = false;
-			if(event.target.value == 'new'){
+			if(value == 'new'){
 				bootbox.prompt('Enter new task list name',async (result)=>{
-					this.$refs.taskListSelector.value = '';
-					if(result === null){
-						this.$refs.taskListSelector.value = this.currentTaskListCollectionId || '';
+					if(result === null || result.trim().length == 0){
 						return;
 					}
 					const taskList = new TaskCollectionModel({
-						name: result
+						name: result.trim()
 					});
 					const ckey = taskListCollection.$add(taskList);
 					try{
 						await taskListCollection.$save();
 						view.touch();
 						await Vue.nextTick();
-						this.$refs.taskListSelector.value = taskList.$key;
 						this.currentTaskListCollectionId = +taskList.$key;
+						setTimeout(() => {
+							this.$refs.addTaskComponent.$refs.input.focus();
+						}, 0);
 					}catch(e){
 						taskListCollection.$removeWhere(ckey);
-						toaster.error(Array.isArray(e) ? e[0] : e);
-						this.$refs.taskListSelector.value = this.currentTaskListCollectionId || '';
+						toaster.danger(Array.isArray(e) ? e[0] : e);
 					}
 					toaster.success(`Task list <strong>${result}</strong> created`);
 				});
 				return;
 			}
-			this.currentTaskListCollectionId = +event.target.value;
-			view.touch();
+			this.currentTaskListCollectionId = +value;
 			await Vue.nextTick();
 			this.$refs.addTaskComponent.$refs.input.focus();
 		},
@@ -129,7 +135,6 @@ export default {
 				/* Remove task list from task list collection */
 				taskListCollection.$removeWhere({ $key: this.currentTaskListCollectionId});
 				this.currentTaskListCollectionId = null;
-				this.$refs.taskListSelector.value = '';
 				view.touch();
 				toaster.warning(`Task list <strong>${name}</strong> deleted`);
 			}
@@ -172,7 +177,6 @@ export default {
 	},
 	mounted(){
 		taskListCollection.$fetch().then(()=>{
-			this.$refs.taskListSelector.disabled = false;	// Enable the selector after collections are fetched
 			view.touch();
 		});
 	},
