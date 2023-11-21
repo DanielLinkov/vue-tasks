@@ -1,3 +1,4 @@
 node_modules
+spinejs/*
 data/*
 !.gitkeep
