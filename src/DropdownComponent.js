@@ -36,7 +36,7 @@ export default {
 			this.options.forEach(option => {
 				const optionElement = document.createElement('div');
 				optionElement.classList.add('dropdown-item');
-				optionElement.innerHTML = option[1];
+				optionElement.innerHTML = option[2] || option[1];
 				optionElement.setAttribute('data-value',option[0]);
 				if(option[0] == this.value){
 					optionElement.classList.add('active');

@@ -67,7 +67,7 @@ export default {
 		},
 		task_lists(){
 			this.stateVersion;
-			const options = taskListCollection.$items.map(task=>[task.$key,task.name]);
+			const options = taskListCollection.$items.map(task=>[task.$key,task.name,`<strong><i class="bi bi-list-task"></i> ${task.name}</strong>`]);
 			options.push([()=>{
 				this.onTaskListSelected('new');
 			},'<em>[New task list]</em>']);
