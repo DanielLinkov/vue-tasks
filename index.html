@@ -26,16 +26,10 @@
 			</div>
 
 			<div class="card-header">
-				<dropdown placeholder="Select task list"> </dropdown>
-			</div>
-			<div class="card-header">
 				<div class="row">
 					<div class="col-9">
-						<select class="form-select" ref="taskListSelector" disabled @change="onTaskListSelected">
-							<option value="" selected :disabled="currentTaskListCollectionId">Select task list</option>
-							<option v-for="taskCollection in taskListCollection" :value="taskCollection.$key">{{ taskCollection.name }}</option>
-							<option value="new">[New Task List]</option>
-						</select>
+						<dropdown placeholder="Select task list" :value="currentTaskListCollectionId" :options="task_lists" ref="taskListSelector" @change="onTaskListSelected">
+						</dropdown>
 					</div>
 					<div class="col-3 d-grid">
 						<button class="btn btn-sm btn-outline-warning" :disabled="!currentTaskCollectionModel" @click="onTaskListDelete"><i class="bi bi-trash-fill"></i> Delete</button>
