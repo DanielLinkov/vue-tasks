@@ -1,6 +1,7 @@
 import { StorageBase } from "./Storage.js";
 import { uuidv4,isPlainObject,getValType } from "./Utils.js";
 //#TODO: use getValType() instead of typeof
+//#TEST
 import { EventTarget,Event as _Event,PropertyChangeEvent,SyncEvent,ModelEvent,ValidationEvent,ErrorEvent } from "./Event.js";
 import { Collection } from "./CollectionFactory.js";
 
