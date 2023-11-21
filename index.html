@@ -10,8 +10,7 @@
 			}
 		}
 	</script>
-	<!-- <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
-	<link rel="stylesheet" href="assets/cosmo/bootstrap.min.css">
+	<link rel="stylesheet" id="link-theme" href="./assets/cosmo/bootstrap.min.css">
 	<link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
@@ -26,6 +25,9 @@
 				</h4>
 			</div>
 
+			<div class="card-header">
+				<dropdown placeholder="Select task list"> </dropdown>
+			</div>
 			<div class="card-header">
 				<div class="row">
 					<div class="col-9">
@@ -67,6 +69,16 @@
 				<div class="mb-3">
 					<label for="theme-select" class="form-label">Theme</label>
 					<select class="form-select" id="theme-select" v-model="config.theme">
+						<option value="default">Default</option>
+						<option value="cosmo">Cosmo</option>
+						<option value="darkly">Darkly</option>
+						<option value="materia">Materia</option>
+						<option value="simplex">Simplex</option>
+					</select>
+				</div>
+				<div class="mb-3">
+					<label for="palette-select" class="form-label">Color palette</label>
+					<select class="form-select" id="palette-select" v-model="config.palette">
 						<option value="light">Light</option>
 						<option value="dark">Dark</option>
 					</select>
@@ -74,7 +86,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="./node_modules/lodash/lodash.min.js"></script>
 	<script src="./node_modules/jquery/dist/jquery.slim.min.js"></script>
 	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="./node_modules/bootbox/dist/bootbox.min.js"></script>

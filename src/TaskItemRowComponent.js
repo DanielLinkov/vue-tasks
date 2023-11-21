@@ -1,5 +1,6 @@
 import CheckboxComponent from "./CheckboxComponent.js";
 import { ViewAdapterVue } from "../lib/View.js";
+import { uniqueId } from "../lib/Utils.js";
 
 export default {
 	components: {
@@ -64,7 +65,7 @@ export default {
 		this.onNewTaskModel();
 	},
 	created(){
-		this.elId = _.uniqueId('_vue_checkbox_');
+		this.elId = uniqueId('_vue_checkbox_');
 	},
 	template: /* html */`
 		<div class="list-group-item d-flex align-items-center hover-visible-container" :class="{'list-group-item-success': task.done,'task-done': task.done}">

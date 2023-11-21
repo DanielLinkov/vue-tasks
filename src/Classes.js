@@ -12,13 +12,14 @@ const storage2 = new LocalStorage({
 const ConfigModel = ModelFactory.createPersistent({
 	className : 'ConfigModel',
 	props: {
-		theme: 'light',
+		theme: 'cosmo',
+		palette: 'light',
 		showCompleted: true,
 	},
 	storage: storage,
 	storageEntityName: 'config',
 	validators: {
-		theme: (val,model,addError)=>{
+		palette: (val,model,addError)=>{
 			if(val != 'light' && val != 'dark')
 				addError("Invalid theme");
 		},

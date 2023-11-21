@@ -1,6 +1,7 @@
 import AddTaskComponent from "./AddTaskComponent.js";
 import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
+import DropdownComponent from "./DropdownComponent.js";
 import { ConfigModel, TaskCollection, TaskModel, TaskCollectionModel, TaskListCollection } from "./Classes.js";
 import { ViewAdapterVue } from "../lib/View.js";
 import Toaster from "./Toaster.js";
@@ -22,6 +23,7 @@ export default {
 		'add-task-box': AddTaskComponent,
 		'task-list': TaskListComponent,
 		'labeled-checkbox': CheckboxComponent,
+		'dropdown': DropdownComponent,
 	},
 	provide() {
 		return {
@@ -40,6 +42,10 @@ export default {
 	},
 	watch: {
 		'config.theme': (val)=>{
+			const linkElement = document.getElementById('link-theme');
+			linkElement.href = `./assets/${val}/bootstrap.min.css`;
+		},
+		'config.palette': (val)=>{
 			document.body.setAttribute('data-bs-theme',val);
 		},
 	},
@@ -205,6 +211,7 @@ export default {
 				configModel.$save();
 			}
 			this.$watch('config.theme',fnChange);
+			this.$watch('config.palette',fnChange);
 			this.$watch('config.showCompleted',fnChange);
 		});
 	}

@@ -1,3 +1,4 @@
+import { uniqueId } from "../lib/Utils.js";
 
 export default {
 	props: [ 'modelValue'],
@@ -8,7 +9,7 @@ export default {
 		}
 	},
 	created(){
-		this.elId = _.uniqueId('_vue_checkbox_');
+		this.elId = uniqueId('_vue_checkbox_');
 	},
 	template: /* html */`
 		<div class="form-check">
