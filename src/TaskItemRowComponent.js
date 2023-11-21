@@ -1,6 +1,6 @@
 import CheckboxComponent from "./CheckboxComponent.js";
-import { ViewAdapterVue } from "../lib/View.js";
-import { uniqueId } from "../lib/Utils.js";
+import { ViewAdapterVue } from "../spinejs/View.js";
+import { uniqueId } from "../spinejs/Utils.js";
 
 export default {
 	components: {

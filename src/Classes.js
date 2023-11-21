@@ -1,6 +1,6 @@
-import { ModelFactory } from '../lib/ModelFactory.js';
-import { CollectionFactory } from "../lib/CollectionFactory.js";
-import { RestApiJsonClient,LocalStorage } from "../lib/Storage.js";
+import { ModelFactory } from '../spinejs/ModelFactory.js';
+import { CollectionFactory } from "../spinejs/CollectionFactory.js";
+import { RestApiJsonClient,LocalStorage } from "../spinejs/Storage.js";
 
 const storage = new RestApiJsonClient({
 	baseUrl : 'http://localhost:3000',

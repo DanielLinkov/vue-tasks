@@ -1,4 +1,4 @@
-import { uniqueId } from "../lib/Utils.js";
+import { uniqueId } from "../spinejs/Utils.js";
 
 export default {
 	props: [ 'modelValue'],

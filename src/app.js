@@ -3,7 +3,7 @@ import TaskListComponent from "./TaskListComponent.js";
 import CheckboxComponent from "./CheckboxComponent.js";
 import DropdownComponent from "./DropdownComponent.js";
 import { ConfigModel, TaskCollection, TaskModel, TaskCollectionModel, TaskListCollection } from "./Classes.js";
-import { ViewAdapterVue } from "../lib/View.js";
+import { ViewAdapterVue } from "../spinejs/View.js";
 import Toaster from "./Toaster.js";
 
 const configModel = new ConfigModel({},{
