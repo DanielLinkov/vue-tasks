@@ -82,7 +82,7 @@ class Model extends EventTarget{
 			enumerable: false,
 			writable: false,
 			value: (key) => {
-				if(typeof key !== 'number')
+				if(!Number.isInteger(key))
 					throw new Error(`Invalid key type: ${key}=>${typeof key}`);
 				collectionKey = key;
 				return this;
