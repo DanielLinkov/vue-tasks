@@ -1,0 +1,3 @@
+[submodule "SpineJS"]
+	path = SpineJS
+	url = https://github.com/DanielLinkov/SpineJS.git
