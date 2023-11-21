@@ -59,7 +59,12 @@ export default {
 		this.$refs.dropdown.addEventListener('mousedown',(e)=>{
 			captureMouse = true;
 		});
-		this.$refs.select.addEventListener('click',()=>{
+		document.addEventListener('click',(e)=>{
+			captureMouse = false;
+			this.$refs.dropdown.classList.remove('show');
+		});
+		this.$refs.select.addEventListener('click',(event)=>{
+			event.stopPropagation();
 			captureMouse = false;
 			if(this.$refs.dropdown.classList.contains('show')){
 				this.$refs.dropdown.classList.remove('show');
@@ -76,6 +81,7 @@ export default {
 			this.$refs.dropdown.classList.remove('show');
 		});
 		this.$refs.select.style.cursor = 'default';
+		this.$refs.dropdown.style.userSelect = 'none';
 	},
 	updated(){
 	}
