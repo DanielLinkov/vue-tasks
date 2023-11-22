@@ -7,7 +7,7 @@ export default {
 	template: /*html*/ `
 		<div class="position-relative">
 			<input class="form-select" :placeholder="placeholder" readonly ref="select"/>
-			<div class="top-100 start-0 w-100 dropdown-menu overflow-y-auto" style="z-index: 100; max-height:300px" ref="dropdown">
+			<div class="top-100 start-0 dropdown-menu overflow-y-auto" style="z-index: 100; max-height:300px;min-width:100%" ref="dropdown">
 			</div>
 		</div>
 	`,
