@@ -18,8 +18,11 @@ export default {
 		value(val){
 			if(val === null)
 				this.$refs.select.value = '';
-			else
-				this.$refs.select.value = this.options.find(option => option[0] == val)[1];
+			else{
+				const option = this.options.find(option => option[0] == val);
+				if(option)
+					this.$refs.select.value = option[1];
+			}
 			this.$refs.select.setAttribute('data-value',val);
 			this.$refs.dropdown.childNodes.forEach(optionElement => {
 				if(optionElement.getAttribute('data-value') == val){

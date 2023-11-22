@@ -116,7 +116,7 @@ const TaskCollectionModel = ModelFactory.createPersistent({
 			if(event.target.$key === null)
 				return;	// this is a new model, not loaded from storage
 			event.target.list = new TaskCollection({collectionModelKeyValue: event.target.$key});
-			event.target.list.$fetch().then(()=>{ });
+			event.target.list.$fetch();
 		},
 		'sync.write': function(event){	//Upon sync write ($save), create a new TaskCollection
 			event.target.list = new TaskCollection({collectionModelKeyValue: event.target.$key});

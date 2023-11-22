@@ -99,13 +99,15 @@ export default {
 					});
 					const ckey = taskListCollection.$add(taskList);
 					try{
-						await taskListCollection.$save();
-						view.touch();
-						await Vue.nextTick();
-						this.currentTaskListCollectionId = +taskList.$key;
-						setTimeout(() => {
-							this.$refs.addTaskComponent.$refs.input.focus();
-						}, 0);
+						taskList.$on('sync.write',(event,record)=>{
+							record.remove();
+							this.currentTaskListCollectionId = +taskList.$key;
+							view.touch();
+							setTimeout(() => {
+								this.$refs.addTaskComponent.$refs.input.focus();
+							}, 0);
+						});
+						taskListCollection.$save();
 					}catch(e){
 						taskListCollection.$removeWhere(ckey);
 						toaster.danger(Array.isArray(e) ? e[0] : e);
