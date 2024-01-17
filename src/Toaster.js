@@ -80,7 +80,7 @@ class Toaster{
 
 		const fnToastHidden = ()=>{
 			options.onHiddenCallback && options.onHiddenCallback();
-			// toastElement.remove();
+			toastElement.remove();
 		}
 		this.#containerElement.appendChild(toastElement);
 
